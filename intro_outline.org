@@ -1,0 +1,17 @@
+
+
+(introduction outline)
+
+- TE, and it promises a roll of generic semantic engine. 
+- It matures, available as open source, can use as off-the-shelf
+  engine. 
+- However, remaining problem: essential algorithmic part - closed box. 
+- (example, it is hard...) 
+- In this paper, we propose a solution for this matter, based on
+  multiple alignment, work as firewall. This results in extensible,
+  multilingual entailment alignment engine. 
+- We report the result on multi-lingual RTE data set, and also
+  application task applied on multiple language. 
+- The resulting entailment engine, surprisingly well against
+  state-of-the-art open source TE engines. 
+
