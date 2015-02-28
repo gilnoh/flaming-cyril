@@ -1,4 +1,28 @@
 
+* Sebastian's outline 
+
+1) Intro: very short (1/2 page)
+  - TE, state of the art, EOP, remaining problems
+2) "Multi-level alignment" (1 1/2 page)
+   MOTIVATION:
+  * Alignments as "universal (un-)relatedness indicators"
+  * "Firewall" between relatedness processing and TE decision
+    - extensibility
+    - multilinguality
+  * STRUCTURE OF EDA:
+   - aligners + feature computers + standard supervised learning
+3) Implementation and Evaluation (1 1/2 page)
+  * THIS IS A PILOT STUDY TO TEST THE POTENTIAL OF THE ARCHITECTURE.
+   - small set of aligners. (those available for all languages)
+   - small set of features. (those applicable to all langauges)
+   - evaluation on one dataset (RTE exists for all languages)
+4) Conclusion (1/2 page)
+   * Results: it works! May not be as good as best alignment-based systems
+     BUT is extensible, robust, and multilingual
+   * AND it is available and anyone can use it, not some research prototype (!!!)
+
+
+* Intro 
 
 (introduction outline)
 
@@ -15,3 +39,36 @@
 - The resulting entailment engine, surprisingly well against
   state-of-the-art open source TE engines. 
 
+
+* Multi-level alignment 
+
+- Figure outline? 
+- Diff -- traditional alignment-based approach. 
+  + Alignment, alignment selection, feature extraction, decision. 
+  + The problem of this case: 
+  + Multi-level alignment: various different layers of alignments. 
+
+- What's new is: no longer tightly coupled. Pre-processing, EDA and
+  knowledge resources. Various linguistic processing can be
+  represented in the form of alignment. (common, also not so common) 
+
+- Decoupling alignment "level" from entailment algorithm. =>
+  + the figure should somehow show 2 step into 3 steps. 
+
+- The gains 
+  + firewall -- aligners just do align 
+  + extension,  multilinguality. 
+
+* Implementation and Evaluation 
+- "this is Pilot-study" 
+- small set of aligners (for all languages) 
+- small set of features (again, language independent) 
+- evaluation on RTE3 
+- evaluation on application data 
+
+* Conclusion 
+- Results: it works! May not be as good as best alignment-based
+  systems BUT is extensible, robust, and multilingual 
+- AND it is available and anyone can use it, not some research
+  prototype (!!!) 
+  
