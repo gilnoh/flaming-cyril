@@ -8,7 +8,8 @@
 \usepackage{latexsym}
 \setlength\titlebox{6.5cm}    % Expanding the titlebox
 
-\title{A extendable, multilingual textual entailment engine by multi-level alignments}
+\title{An extendable, multilingual textual entailment engine by
+  multi-level alignments} 
 
 \author{Author 1\\
 	    XYZ Company\\
@@ -30,11 +31,66 @@
  abstract text 
 \end{abstract}
 
-\section{Introduction (0.5 page)}
-Intro: very short (1/2 page) \\
-- TE, state of the art, EOP, remaining problems \\ 
+\section{Introduction}
+One key challenge at the core of Natural Language Processing (NLP) is
+the ability to determine which conclusions can be inferred from a
+given natural language text. An engine that answers this problem,
+recognition of Textual Entailment (TE), has the potential to become
+the generic semantic processing engine for various NLP tasks.    
+
+TE technology has matured over the last decade. TE modules are being
+utilized in various semantic applications, and researchers can find a
+range of well developed algorithms, methods and even software suites. 
+With various possible choice of open source engines, it is now much
+easier for new users to use TE engines for their applications.
+%One can pick an off-the-shelf engine, with possibility of retraining
+%on the target domain.
+Recent developments of ``platform approach'' even permit us to
+exchange various modules (such as knowledge-bases, pre-processing  
+pipelines) in standardized ways.   
+
+However, one core-problem still remains, and hinders improvements of
+existing TE solutions: extensibility of TE core algorithm
+implementations. Unlike pre-processing or knowledge resources,
+extending an existing TE algorithm implementation is generally a very
+difficult task. Core-algorithm parts of TE engines are normally
+designed as ``black-boxes''. Thus, adding a new aspect of analysis, or
+a new internal representation only recently become available to
+an existing engine is often very hard. 
+This often forces the next generation of TE researchers to write their
+own system again from the scratch. 
+
+%In this paper, we focus and revisit this aspect of extensibility of TE
+%core algorithm.
+We propose a solution to this problem by proposing a TE system data
+flow that revolves around a layer called ``multi-level alignment''
+representation that holds various heterogeneous analysis results. Each
+analyzer represent their analysis as a form of alignment between the
+Text (T) and Hypothesis (H). The layer works essentially as the
+central and open representation space for the proposed TE processing
+flow, and make it easier to future contributors to add their own
+analysis components, and essentially make the core-algorithm as an
+open box, instead of a black-box.      
+% we believe/hope this will give a test-best for (specific) linguistic
+% researchers to test their analysis result on TE ... (?) 
+
+This paper introduces our pilot study, and one multilingual TE engine
+implementation \footnote{url anonymized.} that works on English,
+German and Italian. It utilizes only minimal number of analyzers
+(aligners), coupled with a set of basic language-independent
+features. The reported result can be regarded as the baseline, or
+starting point for this approach. Surprisingly, the results are quite
+good and it already competes with best open source engines available
+for each language. 
+
+%We introduce the approach in section 2, and describe current pilot
+%implementation in section 3. The section also shows multilingual
+%evaluation results on the RTE-3 test-set, and on an application test
+%set.  
 
 \section{Multi-level alignment (1.5page)}
+
+
   %%  MOTIVATION:
   %% * Alignments as "universal (un-)relatedness indicators"
   %% * "Firewall" between relatedness processing and TE decision
@@ -42,7 +98,25 @@ Intro: very short (1/2 page) \\
   %%   - multilinguality
   %% * STRUCTURE OF EDA:
   %%  - aligners + feature computers + standard supervised learning
- 
+
+- Figure outline? 
+- Diff -- traditional alignment-based approach. 
+  + Alignment, alignment selection, feature extraction, decision. 
+  + The problem of this case: 
+  + Multi-level alignment: various different layers of alignments. 
+
+- What's new is: no longer tightly coupled. Pre-processing, EDA and
+  knowledge resources. Various linguistic processing can be
+  represented in the form of alignment. (common, also not so common) 
+
+- Decoupling alignment "level" from entailment algorithm. =>
+  + the figure should somehow show 2 step into 3 steps. 
+
+- The gains 
+  + firewall -- aligners just do align 
+  + extension,  multilinguality. 
+
+
 \section{Implementation and Evaluation (1.5 page)}
   %% * THIS IS A PILOT STUDY TO TEST THE POTENTIAL OF THE ARCHITECTURE.
   %%  - small set of aligners. (those available for all languages)
