@@ -6,6 +6,10 @@
 \usepackage{naaclhlt2015}
 \usepackage{times}
 \usepackage{latexsym}
+\usepackage{amsmath,amssymb}
+%\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{rotating}
 \setlength\titlebox{6.5cm}    % Expanding the titlebox
 
 \title{An extendable, multilingual textual entailment engine by
@@ -74,33 +78,55 @@ open box, instead of a black-box.
 % we believe/hope this will give a test-best for (specific) linguistic
 % researchers to test their analysis result on TE ... (?) 
 
-This paper introduces our pilot study, and one multilingual TE engine
-implementation \footnote{url anonymized.} that works on English,
-German and Italian. It utilizes only minimal number of analyzers
-(aligners), coupled with a set of basic language-independent
-features. The reported result can be regarded as the baseline, or
-starting point for this approach. Surprisingly, the results are quite
-good and it already competes with best open source engines available
-for each language. 
+This paper introduces our pilot study of this architecture, and the
+resulting multilingual TE engine implementation \footnote{url
+  anonymized.} that works for English, German and Italian. It utilizes 
+only a minimal number of analyzers (aligners), coupled with a set of
+basic language-independent features. The reported result can be
+regarded as the baseline for this approach. Surprisingly, the results
+are quite good and it already competes with best open source engines
+available for each language.   
 
 %We introduce the approach in section 2, and describe current pilot
 %implementation in section 3. The section also shows multilingual
 %evaluation results on the RTE-3 test-set, and on an application test
 %set.  
 
-\section{Multi-level alignment (1.5page)}
+\section{Multi-level alignment-based approach}
+Alignments between Text and Hypothesis has been used as important
+indicator for entailment recognitions, relatively early in the
+literature. Word and phrase level monolingual aligners had been used
+to find out corresponding local parts between T-H \cite{}, and also
+dependency-node level alignments have shown useful for TE decisions
+\cite{}.     
 
-(Alignment, already used widely as a driving for TE engines.) 
-(RTE book, conceptually-- steps. Pre-processing, Enrichment, candidate
-alignment generation, alignment selection, classification.) 
+More generally, it is possible to map various TE approaches
+conceptually fit into alignment-based approach. Ido et al. outlined
+vaiours TE approaches found in the literature conceptually mapped into 
+a generic alignment-based architecture that has six steps:  
+pre-processing, enrichment, candidate alignment generation, alignment
+selection, and classification \cite{RTE-book}.  
 
-(figure?)
+It is informative to compare our proposal of multi-level alignment
+approach to this conceptual steps. The figure \ref{fig:1} shows the
+data flow of the proposed approach. 
 
-(We use a similar approach, however, with two notable changes.
-- alignments as main internal representation. 
-- various levels of alignments co-existing in this layer. no one
-alignment is the correct one. 
-)
+\begin{figure}[t!b]
+  \centering
+  \includegraphics[width=0.8\columnwidth]{figures/figure1.pdf}
+  \caption{Dataflow of the proposed approach}
+  \label{fig:1}
+\end{figure}
+
+(Explanation of the figure - flow down) 
+
+(Two major differences) 
+(- no alignment selection: various levels of alignments co-existing in
+this layer. no one alignment is the correct one. ) 
+(- alignments as main internal representation. traditionally,
+knowledge resources and algorithm modules were called from core
+algorithm, however, here, all processings before feature extraction
+are  )
 
 
 \section{Implementation and Evaluation (1.5 page)}
