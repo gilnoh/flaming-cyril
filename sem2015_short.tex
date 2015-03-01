@@ -90,38 +90,87 @@ for each language.
 
 \section{Multi-level alignment (1.5page)}
 
+(Alignment, already used widely as a driving for TE engines.) 
+(RTE book, conceptually-- steps. Pre-processing, Enrichment, candidate
+alignment generation, alignment selection, classification.) 
 
-  %%  MOTIVATION:
-  %% * Alignments as "universal (un-)relatedness indicators"
-  %% * "Firewall" between relatedness processing and TE decision
-  %%   - extensibility
-  %%   - multilinguality
-  %% * STRUCTURE OF EDA:
-  %%  - aligners + feature computers + standard supervised learning
+(figure?)
 
-- Figure outline? 
-- Diff -- traditional alignment-based approach. 
-  + Alignment, alignment selection, feature extraction, decision. 
-  + The problem of this case: 
-  + Multi-level alignment: various different layers of alignments. 
-
-- What's new is: no longer tightly coupled. Pre-processing, EDA and
-  knowledge resources. Various linguistic processing can be
-  represented in the form of alignment. (common, also not so common) 
-
-- Decoupling alignment "level" from entailment algorithm. =>
-  + the figure should somehow show 2 step into 3 steps. 
-
-- The gains 
-  + firewall -- aligners just do align 
-  + extension,  multilinguality. 
+(We use a similar approach, however, with two notable changes.
+- alignments as main internal representation. 
+- various levels of alignments co-existing in this layer. no one
+alignment is the correct one. 
+)
 
 
 \section{Implementation and Evaluation (1.5 page)}
-  %% * THIS IS A PILOT STUDY TO TEST THE POTENTIAL OF THE ARCHITECTURE.
-  %%  - small set of aligners. (those available for all languages)
-  %%  - small set of features. (those applicable to all langauges)
-  %%  - evaluation on one dataset (RTE exists for all languages)
+What we report in this paper is a pilot study testing the potential of
+the proposed architecture. This section first describes the
+implementation detail such as pre-processing pipelines, knowledge
+resources, aligners and features. 
+
+And the section concludes with the evaluation result of the system on
+RTE and application data-set.   
+
+\subsection{Pre-processing, knowledge components, and data representation} 
+We used an open source TE platform \cite{EOP-demo} as the supporting
+tool for this implementation. The platform provides various
+multilingual pre-processing pipelines, and also provides knowledge  
+resources wrapped in a standardized manner for our target languages.
+Among the available set of multilingual pre-processing pipelines, we
+have used Maltparser with TreeTagger, for all three target languages
+English, German and Italian. The platform also provides common
+interface access for various lexical resources, and all knowledge
+resources used with the lexical aligner are accessed via this
+interface. 
+
+Another important service that is provided by the platform is the
+capability of representing complex data types in a common data
+representation. This naturally includes normal linguistic annotations
+(such as POS, lemma, parse tree, NER...), but this also includes the
+ability to present alignment between any annotation. It permit us to
+represent well-known alignments over words and phrases, but also
+between parse-trees, NERs, and between any annotations added to T-H
+side. This enabled us to define a multilingual ``multi-level
+alignment''  representation layer, with minimal new data type
+definitions.
+%The representation of the platform
+%is based on UIMA CAS, and requires some learning curve to represent
+%the data, but this enable us to embed one common alignment
+%representation layer for ``any future'' alignments.  
+By utilizing those existing modules of a common platform, we were able
+to concentrate on the core-algorithm implementations.   
+
+\subsection{The (minimal) aligners}
+For this pilot study, we have used two main aligners. One is lexical
+aligner that connects possible (local) relations based on lexical
+resources.
+
+(lexical aligner works via lexical resource, add links that means this
+two are related locally. all links has directions, according to the
+lexical resources. Each resource become one aligner that links lemmas)
+
+(Phrase aligner, difference, surface level (tokens).)  
+
+(Both lexical and phrase aligner requires scan phase of T-H. We
+implemented a linear time look up routine.)
+
+Note that, the aligners connected here are really minimal, and
+language independent in this study. Developing and using more
+sophisticated aligners for each language is future work of our study.
+
+\subsection{The (minimal, language independent) features} 
+
+
+
+\subsection{Experimental results} 
+RTE3 was one of the evaluation workshop for TE. It has 800 training
+and 800 testing T-H pairs, and later it was translated to both German
+and Italian. The following table shows the 
+
+
+(Entailment Graph making)
+
 
 \section{Conclusion (0.5 page)} 
    %% * Results: it works! May not be as good as best alignment-based systems
