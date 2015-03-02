@@ -73,7 +73,7 @@ new language or a new aspect of analysis) are often very hard, if not
 impossible. This often forces the next generation of TE researchers to
 write their own core algorithms again from scratch.
 
-In this paper, we address this problem by proposing a TE architecture
+In this paper, we address this problem by proposing an approach to TE
 that revolves around a central representation layer called {\em
   multi-level alignment} which can encode many relevant phenomena for
 entailment. The use of multi-level alignments encourages the modular,
@@ -83,7 +83,7 @@ easier to future researchers and developers to change analysis
 components or add new ones. \marginpar{SP: that's just a claim,
   right?}
 
-We also demonstrate our pilot implementation of this architecture and
+We also demonstrate our pilot implementation of this approach and
 shows evaluation results for English, German and Italian. It utilizes
 only a minimal number of analysers, coupled with a set of basic
 language-independent features, and thus can be regarded as a baseline
@@ -103,7 +103,7 @@ correspondences between parts of T and H that can be used to define
 word level, phrase level \cite{MacCartney:EMNLP08}, or dependency
 level \cite{dinu-wang:2009:EACL}. Dagan et
 al. \shortcite{dagan12:_recog_textual_entail} develop this into a
-generic alignment-based architecture with six steps: pre-processing,
+generic alignment-based approach with six steps: pre-processing,
 enrichment, candidate alignment generation, alignment selection, and
 classification.
 
@@ -134,8 +134,8 @@ basis of individal alignments, or from sets of alignments. We assume
 that the features form a vector describing the T-H pair, and that the
 last step is supervised entailment classification.
 
-\paragraph{Discussion.} The main deviation from Dagan et al.'s
-architecture is that we intentionally leave out the step of {\em
+\paragraph{Discussion.} The main difference to Dagan et al.'s
+approach is that we intentionally leave out the step of {\em
   alignment selection} which explicitly selects a single alignment for
 each part of H or T, typically the globally most probable one. Our
 decision to forgo selection is grounded in our design of Multi-Level
@@ -178,80 +178,80 @@ data types.
 
 \section{Implementation and Evaluation}
 \label{sec:impl}
-We report a pilot, baseline implementation that tests the potential of 
-the proposed architecture. This section first describes the
-implementation, then shows the evaluation of the system on two
-multi-lingual test set. The implementation, and its source code can 
-be accessed from the project homepage \footnote{{URL} anonymized.}.    
 
-\subsection{Pre-processing, knowledge resource, and data
-  representation}  
-We utilize an open source TE development platform \cite{} as the 
-supporting tools for our architecture. The platform provides various   
-multilingual pre-processing pipelines, and also knowledge in a
-standardized manner for our target languages.
-For pre-processing, we have used Maltparser pipelines with TreeTagger
-models for all three languages. All knowledge resources (such as
-WordNet, VerbOcean, etc) reported in this paper are accessed via the 
-platform.    
+We describe a pilot implementation of the Multi-Level Alignment
+approach to test its potential by evaluating it on two use cases in
+three languages (DE, EN, IT). The implementation is available
+online.\footnote{{URL} anonymized.}
+
+\subsection{Technical Foundations.}  
+
+We implement the Multi-Level Alignment approach within an open source
+TE development platform \cite{EOP-arch}. The platform provides various
+multilingual pre-processing pipelines and knowledge resources such as
+WordNet, VerbOcean, etc., under a shared API. For pre-processing, we
+use TreeTagger-based lemmatization and MaltParser-based dependency
+parsing for all three languages.
 
 Another important service that is provided by the platform is the
-capability of representing complex data types in a common data
-representation. The platform uses UIMA CAS \cite{} as the data
-container \cite{}, and defines various annotation types which can be
-extended in a coherent manner. This naturally includes linguistic
-annotations (such as POS, lemma, parse tree, NER...), but it also
-includes the ability to add new meta data type, such as
-alignments. This enabled us to define a multilingual multi-level
-alignment representation layer, with minimal new data type
-definitions. By utilizing those existing modules of a common platform,
-we were able to concentrate on the core-algorithm implementations.  
+ability of storing a wide range of linguistic annotations in a common,
+language-independent data representation. The platform uses UIMA CAS
+\cite{d04:_uima} as the data container, and defines various annotation
+types which can be extended in a controlled manner. We used this
+capability to introduce a multilingual Multi-Level Alignment layer
+(links with types, labels and weights) with relatively little
+implementation effort.
+%By
+%utilizing those existing modules of a common platform, we were able to
+%concentrate on the core-algorithm implementations.
 
-\subsection{The (minimal) aligners}
-We used two main aligners for the pilot study. The first aligner is
-a generic lexical aligner that works on lemmas via lexical resources,
-and the other is a phrase aligner that works on consecutive tokens.  
+\subsection{A Minimal Set of Aligners}
 
-\paragraph{Lexical aligner} Lexical aligner adds alignment links by
-looking up all possible connections between T-H lemmas. If a
-relationship is found between two lemmas (one on T and the other on H)
-from the given lexical resource, the aligner adds a link between
-them. The link has a direction, and has properties of relation name,
-and relation strength. Relation name records the type of relation
-reported by the lexical resource (such as ``synonym'',
-``antonym''). Relation strength is a property that shows the strength
-(likelihood) of the relationship, which is often reported by an
-automatically built resources such as distributional semantics
-tools. The aligner adds all possible links that can be found by the
-given lexical resource on the given T-H pair.  
+The pilot study restricts itself to three aligners.  Incorporating
+more sophisticated aligners for each language are avenues of future
+work.
 
-For English, WordNet and VerbOcean were used as the lexical
+%  of this
+% study. Additional aligners such as predicate-compatibility aligner
+% (for English), and negation aligners (for English and Italian) are
+% currently in plan.
+
+
+
+\paragraph{Lexical Aligner.} The lexical aligner adds an alignment link
+for a pair of lemmas in T and H if it finds some kind of semantic
+relationships between them in a set of lexical resources. The link is
+directed, labeled (by the semantic relation, e.g. ``synonym'',
+``antonym'') and weighted, with the weight indicating the strength of
+the relationship. Note that this aligner can on its own already
+produce alignment links with inconsistent semantics (positive and
+negative). For English, WordNet and VerbOcean were used as lexical
 resources. Italian WordNet was used for Italian, and GermaNet and
-German DerivBase \cite{} were used as lexical resources for German. 
+German DerivBase \cite{Zeller:2013} were used as lexical resources for
+German.
 
-\paragraph{Paraphrase aligner} Paraphrase aligner is similar to the
-lexical aligner, but what it connects are surface level (tokens),
-and it concentrated on more specific resource; the monolingual
-paraphrase tables automatically generated by pivot-translation of
-Machine Translation tools \cite{}. The alignment links reported by
-this aligner has only one relation (paraphrase), but they report
-strength of the relation via the translation probability of the
-paraphrase. 
+\paragraph{Paraphrase Aligner.} The paraphrase aligner concentrates on
+surface forms rather than lemmas and can align sequences of them
+rather than just individual tokens. It uses paraphrase tables, e.g.
+extracted from parallel corpora
+\cite{bannard05:_parap_bilin_paral_corpor}. The alignment process is
+similar to the lexical aligner: any two sequences of tokens in T and H
+are aligned if the pair is listed in the resource.  The alignment
+links created by this aligner instantiate only one relation
+(``paraphrase'') but report the strength of the relation via the
+translation probability. We used the paraphrase table provided by the
+METEOR MT evaluation package \cite{denkowski-lavie:2014:W14-33}.
 
-In addition to the two aligners, identical lemmas are also aligned
-between T-H, without any additional information. In all cases,
-aligners report any possible connections they could find, without
-regard to existing alignment links.  
+\paragraph{Lemma Identity Aligner.} This aligner does not use any
+resources. It simply aligns identical lemmas between T and H and plays
+an important role in practice to to deal with named entities.
 
-Note that the aligners here are minimal, and forms a test-bed, or a
-baseline, where additional aligner (analysis) developers can add new
-aligners and observe their impacts on TE evaluation. Incorporating
-more sophisticated aligners for each language is future work of this
-study. Additional aligners such as predicate-compatibility aligner
-(for English), and negation aligners (for English and Italian) are
-currently in plan.  
 
-\subsection{The (minimal) features} 
+
+\subsection{A Minimal Feature Set} 
+
+Similar to the 
+
 We used a set of language independent features in this pilot study. 
 
 The first set is word coverage ratios that measure how much of the
@@ -287,7 +287,6 @@ with.
 
 \begin{table}[t!]
 \centering
-\small
 \begin{tabular}{l|ccc}
           &   English   &   German   &   Italian \\
 \hline
@@ -324,7 +323,6 @@ originated from actual native speakers, and not translated data. Table
 
 \begin{table}[t!]
 \centering
-\small
 \begin{tabular}{l|ccc}
               &   English    &   Italian   &  German  \\
 \hline
