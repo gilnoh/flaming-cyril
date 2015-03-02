@@ -1,5 +1,5 @@
 %
-% The manuscript for P1EDA. 
+% The manuscript for P1EDA, short paper. 
 
 \documentclass[11pt,letterpaper]{article}
 \usepackage{naaclhlt2015}
@@ -38,77 +38,74 @@
 One key challenge at the core of Natural Language Processing (NLP) is
 the ability to determine which conclusions can be inferred from a
 given natural language text. An engine that answers this problem,
-recognition of Textual Entailment (TE), has the potential to become
-the generic semantic processing engine for various NLP tasks.    
+recognition of Textual Entailment (TE) \cite{}, has the potential to
+become the generic semantic processing engine for various NLP tasks.     
 
-TE technology has matured over the last decade. TE modules are being
+TE technology has matured during the last decade. TE modules are being 
 utilized in various semantic applications, and researchers can
 find a range of well developed algorithms, methods and even software
-suites.
-It is now much easier for new users to use TE engines for their
-applications. Recent developments of ``platform approach'' even permit
-us to exchange various modules (such as knowledge-bases,
-pre-processing pipelines) in a standardized way \cite{}.    
+suites. It is now much easier for new users to use TE engines for
+their applications. Recent developments of ``platform approach'' even
+permit us to exchange various modules (such as knowledge-bases,
+pre-processing pipelines) in a standardized way \cite{}.     
 
-However, one core-problem still remains, and hinders improvements of 
+However, one core problem still remains and hinders improvements of  
 existing TE solutions: extensibility of TE core algorithm
-implementations. Unlike pre-processing or knowledge resources, 
+implementations. Unlike pre-processing modules or knowledge resources,   
 extending an existing TE algorithm implementation is generally a very
-difficult task. Core-algorithm parts of TE engines are normally
-designed as ``black-boxes''. Thus, adding a new aspect of analysis, or
-change the internal representation to a new one from an existing
-engine is often very hard, if not impossible. This often forces the
-next generation of TE researchers to write their own core algorithms
-again from the scratch.   
+difficult task. Core algorithm parts of TE engines are normally
+designed as {\em black-boxes}. Thus, adding support for a new
+language, a new aspect of analysis, or change the internal
+representation of an existing engine are often very hard, if not
+impossible. This often forces next generation of TE researchers to
+write their own core algorithms again from the scratch.
 
 In this paper, we focus and revisit this aspect of extensibility of TE
-core algorithm. We propose a solution to this problem by proposing a
-TE system data flow that revolves around a layer called ``multi-level
-alignment'' representation that holds various heterogeneous analysis
-results. Each analyzer represent their analysis as a form of alignment
-between the Text (T) and Hypothesis (H). The layer works essentially
-as the central representation space for the proposed TE processing
-flow, and make it easier to future contributors to add their own
-analysis components
-%, and essentially make the core-algorithm as an
-%open box, instead of a black-box. 
+implementation. We propose a solution to this problem by proposing a 
+TE system data flow that revolves around a layer called {\em
+  multi-level alignment representation} that holds various
+heterogeneous analysis results. Each analyzer represent their analysis
+as a form of alignment between the Text (T) and Hypothesis (H). The
+layer works essentially as the central representation space for the
+proposed TE processing flow, and makes it easier to future contributors
+to add their own analysis components. 
 
-This paper introduces our pilot study of this architecture, and the
-resulting open source multilingual TE engine implementation that works
-for English, German and Italian. The implementation is a test-bed,
-which utilizes only a minimal number of analyzers (aligners), coupled
-with a set of basic language-independent features. The reported result
-can be regarded as the baseline for this approach. Surprisingly, the
-results are quite good and it already competes with best open source
-engines available for each language.     
+This paper introduces our pilot study of this architecture, and shows
+evaluation results of the multilingual pilot system that works for
+English, German and Italian. The pilot implementation utilizes only a
+minimal number of analyzers (aligners), coupled with a set of basic
+language-independent features. Thus, the reported result of this
+system can be regarded as the baseline of the proposed approach
+approach. Surprisingly, the results are quite good and it already
+competes with the best open source engines available for each
+language.       
 
 %We introduce the approach in section 2, and describe current pilot
 %implementation in section 3. The section also shows multilingual
 %evaluation results on the RTE-3 test-set, and on an application test
 %set.  
 
-\section{Multi-level alignment-based approach}
+\section{Textual entailment with multi-level alignments}
 Alignments between Text and Hypothesis have been used as important
-indicator for entailment recognitions, relatively early in the
+indicators for entailment recognition relatively early in the
 literature. Word and phrase level monolingual aligners had been used
 to find out corresponding local parts between T-H \cite{}, and also
 dependency-node level alignments have shown useful for TE decisions
 \cite{}.     
 
-More generally, it is possible to map various TE approaches
-conceptually fit into alignment-based approach. Ido et al. outlined
+More generally, it is possible to map various TE approaches to
+the alignment-based architecture, conceptually. Ido et al. outlined
 vaiours TE approaches found in the literature conceptually into a
 generic alignment-based architecture that has six steps:
-{\em pre-processing}, {\em enrichment}, {\em candidate alignment
-  generation}, {\em alignment selection}, and {\em classification}
-\cite{}.   
-It is informative to compare our proposal of multi-level alignment
+pre-processing, enrichment, candidate alignment generation, alignment
+selection, and classification \cite{}.   
+It is informative to compare our proposal of multi-level alignment 
 approach with this conceptual steps. The figure \ref{fig:1} shows the
-data flow of the proposed approach. 
+data flow of our proposal. 
 
 \begin{figure}[t!b]
   \centering
-  \includegraphics[width=0.8\columnwidth]{figures/figure1.pdf}
+  \includegraphics[width=0.9\columnwidth]{figures/figure1.pdf}
   \caption{Dataflow of the proposed approach}
   \label{fig:1}
 \end{figure}
@@ -117,176 +114,174 @@ The Text (T) and Hypothesis (H) pair first get pre-processing, such as
 POS tagging, lemmatizer, dependency parser and NER. Then, the 
 annotated T and H pair becomes the input for various individual
 aligners. Each aligner in the figure can use knowledge resources
-(hence, {\em enrichment} step is abstracted within each aligner in
+(hence, enrichment step is abstracted within each aligner in
 this setup).
 
-Once each individual aligner adds alignments, we have a data
-representation that holds all aligner outputs stored in one data
-structure. This is named as ``{\em Multi-level alignments}'' in the 
-figure. We envision that this representation can hold different layers
-of alignments: for example, alignments that links surface level
-(tokens), lemma levels, syntactic levels (e.g. dependency structures),
-predicate levels, and so on. Also, analysis results normally not
-treated as alignment, can be expressed here as its own alignment
-expression; such as negation analysis result (e.g. this verb on T is 
-negated on H), or predicate incompatibility (e.g. main verb on T
-express ``possiblility'', while main verb on H express ``actuality'',
-etc).   
+The collective alignment data generated by each individual aligner are
+stored in one data structure. This is named as {\em Multi-level
+  alignments} in the figure. We envision that this representation can
+hold different layers of alignments: for example, alignments that
+links surface level (tokens), lemma levels, syntactic levels
+(e.g. dependency structures), predicate levels, and so on. Also,
+analysis results normally not treated as alignment, can be expressed
+here as a type of alignment; such as negation analysis result
+(e.g. this verb on T is negated on H), or predicate (in-)compatibility
+links (e.g. the verb on T express possibility, while the main verb of
+H express actuality). 
 
-Then the next step comes as feature extraction. With this step,
-various features are extracted from the available alignments
-(essentially local-analysis results reported from the aligners), and
-the extracted feature vector finally represent
-Finally it is classified via a general classifier trained with
-training data.
+The next step described in the figure is feature extraction step.
+Various features are extracted from the available alignments
+(essentially local-analysis results reported from the aligners), and 
+the extracted feature vector represents the T-H pair, and classified
+via a general classifier trained with a training data. 
 
-One notable deviation from generic alignment-based architecture is
-that, here we intentionally leaving out the step of {\em alignment 
-  selection}. Alignment selection is a process where the system
-finalizes alignments, by explicitly assigns a specific portion of T to
-another specific position of H as the one correct alignment. Our
-choice of not doing alignment selection is closely related to the fact
-that we envision multi-level alignments to hold non-traditional
-alignments which cannot easily mapped into one single
-alignment. Getting the global view of the T-H pair is done via the
-feature extraction steps. So basically, adding additional aligner
-requires designing additional features. 
+One notable deviation from conceptual alignment-based architecture is,
+here we intentionally leaving out the step of {\em alignment
+selection}. Alignment selection is a process where the system
+finalizes alignments by explicitly assigns a specific portion of T to  
+a specific position of H as the one correct alignment. Our choice of
+not doing alignment selection is closely related to the fact that we
+envision multi-level alignments to hold non-traditional alignments
+which cannot easily mapped into one single alignment. Getting the
+global view of the T-H pair is postponed to the feature extraction
+steps. Basically, adding additional (more sophisticated) aligner
+requires designing additional (specialized) features.  
 
-% 
-The main (new) idea of this paper here is that making this layer of
-expressed multi-level alignment structure as open as possible for
-future addition of new aligner / alignments. We believe this can be
-done by making this structure clearly defined, and also making the
-whole algorithm (code, implementation) very easy to understand and
-access. This layer is  represented with a common data type we borrowed
-from \cite{}, and we added {\em alignment links} as a generic type
-that can link any annotations. This enabled us to represent
-multi-level alignment layer that can hold any (even future) alignment
-analysis outputs.   
+The main idea of this TE processing flow is making the layer of
+multilevel alignment structure as open as possible for future 
+addition of new aligners (analyzers). We believe this can be done by
+making the data structure clearly defined for extensions, and also
+making the whole algorithm (also code and implementation) very easy to 
+understand and access.
 
-Naturally, this comes with a cost that each aligner (analysis)
-developer need to learn how to access this common data strcuture.
+This layer is represented with a common data type we borrowed from a
+TE open-source platform \cite{}. We added {\em alignment links} as a
+generic type that can link any linguistic annotation data within the
+data type. This enabled us to represent multi-level alignment layer
+that can hold any (even future) alignment analysis outputs.  
+Naturally, this comes with a cost that each aligner (analyzer)
+developer need to learn how to access this common data structure.
 We believe this is an acceptable cost, expecially when this data
 structure already comes with good representation of multi-lingual,
-extensible annotation data representations (see section
-\ref{sec:impl} for the adopted data type). One major point of the
-architecture is enabling {\em orthogonality} \cite{} between analysis
-modules: adding a new (future) module (here, analyzer / aligner)
-without need to know about what other modules (other aligners) are
-doing. We show this is true for the proposed architecture in the next
-section, with a minimal setup of aligners.    
+extensible annotation data representations (see Section
+\ref{sec:impl} for more details on the adopted data type).
+
+One major consideration point of the architecture is enabling {\em
+  orthogonality} \cite{} between aligner (analysis) modules: adding a
+new module does not require knowledge of what other modules (aligners)
+are doing. This is already shown (at least partially) true in the
+pilot implementation, which is described in the next section. 
 
 \section{Implementation and Evaluation}
 \label{sec:impl}
-We report a pilot study that test the potential of the proposed
-architecture. This section first describes the implementation detail,
-and then shows the evaluationon of the system on RTE-3 and on an
-application data-set. All the implementations with source code can
-be accessed from the homepage \footnote{{URL} anonymized.}.  
+We report a pilot study that tests the potential of the proposed
+architecture. This section first describes the implementation, then
+shows the evaluationon of the system on two test data. The
+implementation, and its source code can be accessed from the
+project homepage \footnote{{URL} anonymized.}.   
 
 \subsection{Pre-processing, knowledge resource, and data
   representation}  
 We used an open source TE development platform \cite{} as the
 supporting tools for our architecture. The platform provides various  
 multilingual pre-processing pipelines, and also supports a set of
-knowledge resources wrapped in a standardized manner for our three
-target languages (German, Italian, and English). Among the available
-set of multilingual pre-processing pipelines, we have used Maltparser
-with TreeTagger, for all three target languages. All knowledge
-resources (such as WordNet, VerbOcean, etc) reported in this paper
-are accessied via the platform. 
+knowledge resources wrapped in a standardized manner for our target
+languages. Among the available set of multilingual pre-processing
+pipelines, we have used Maltparser pipelines with TreeTagger models,
+for all three target languages. All knowledge resources (such as
+WordNet, VerbOcean, etc) reported in this paper are accessied via this
+platform.  
 
 Another important service that is provided by the platform is the
 capability of representing complex data types in a common data
 representation. The platform uses UIMA CAS as the data container
 \cite{}, and defines various annotation types which can be extended in
-a coherent manner. This naturally includes normal linguistic
-annotations (such as POS, lemma, parse tree, NER...), but it also
-includes the ability to add new meta data type, such as
-alignments. This enabled us to define a multilingual ``multi-level
-alignment''  representation layer, with minimal new data type
-definitions. 
+a coherent manner. This naturally includes linguistic annotations
+(such as POS, lemma, parse tree, NER...), but it also includes the
+ability to add new meta data type, such as alignments. This enabled us
+to define a multilingual multi-level alignment representation layer,
+with minimal new data type definitions.   
 
 By utilizing those existing modules of a common platform, we were able
 to concentrate on the core-algorithm implementations. 
 
 \subsection{The (minimal) aligners}
-We used two main aligners for this pilot study. The first aligners is
-a generic lexical aligner that works on lemmas and lexical resources,
-and the other is phrase aligner that works on consecutive tokens.  
+We used two main aligners for the pilot study. The first aligner is
+a generic lexical aligner that works on lemmas via lexical resources,
+and the other is a phrase aligner that works on consecutive tokens.  
 
 \paragraph{Lexical aligner} Lexical aligner adds alignment links by
 looking up possible connections between T-H lemmas. If a relationship
-is found between two lemmas (one on T and the other on H), the aligner
-add a link between them. The link has directions (TtoH, HtoT or
-bi-direction), and has two properties: relation name, and relation
+is found between two lemmas (one on T and the other on H) from the
+given lexical resource, the aligner add a link between them. The link
+has directions, and has two properties of relation name, and relation  
 strength. Relation name records the type of relation reported by the
-lexical resource (such as synonym, antonym). Relation strength is a
+lexical resource (such as synonym, antonym). Relation strength is a 
 property that shows the strength (likelihood) of the relationship,
-which is often reported by an automatically built resources via
-distributional semantics, etc. The aligner adds all possible links
-that can be found in the given lexical resource. 
+which is often reported by an automatically built resources such as
+distributional semantics tools. The aligner adds all possible links  
+that can be found by the given lexical resource on the given T-H
+pair. 
 
 For English, WordNet and VerbOcean were used as the lexical
-resource. Italian WordNet \cite{} was used for Italian, and GermaNet
+resources. Italian WordNet \cite{} was used for Italian, and GermaNet
 and German DerivBase \cite{} were used as lexical resources for
 German.
 
-\paragraph{Paraphrase aligner} Paraphrase aligner is similar to the lexical 
-aligner, but it connects by observing surface level (tokens), and it  
-concentrated on specific data; the monolingual paraphrase tables 
-automatically generated by pivot-translation of Machine Translation
-tools \cite{}. The  alignment links reported by this aligner is
-simpler than lexical  aligners (no relationships, other than
-paraphrase). The generated links report strength of the relation via
-the translation probability of the paraphrase.   
+\paragraph{Paraphrase aligner} Paraphrase aligner is similar to the
+lexical aligner, but what it connects are surface level (tokens),
+and it concentrated on more specific resource; the monolingual
+paraphrase tables automatically generated by pivot-translation of
+Machine Translation tools \cite{}. The alignment links reported by
+this aligner has only one relation (paraphrase), but the link reports
+strength of the relation via the translation probability of the
+paraphrase. 
 
 In addition to the two aligners, identical lemmas are also aligned
 between T-H, without any additional information. In all cases,
 aligners report any possible connections they can find, without
 regard to existing alignment links.  
 
-Note that the aligners reported here are really minimal in the
-proposed setup, and they are also language independent in this
-study. These minimal aligners provide a test-bed baseline where
-additional analyzer (aligner) developers can observe their 
-improvements on it.  Developing and using more sophisticated aligners
-for each language is future work of this study. For example,
-predicate-compatibility aligner, and syntactic component aligners are
-currently in planning.
+Note that the aligners reported here minimal aligners that provide a
+test-bed baseline where additional analyzer (aligner) developers can
+add new aligners and observe their impacts on TE
+evaluation. Incorporating more sophisticated aligners for each 
+language is future work of this study. Additional aligners such as
+predicate-compatibility aligner (for English), and negation aligners
+(for English and Italian) are currently in plan. 
 
 \subsection{The (minimal) features} 
-We used a set of language independent features in this pilot
-study.
+We used a set of language independent features in this pilot study. 
 
 The first set is word coverage ratios that measure how much of the
-Hypothesis words are covered by local relationship from Text
-words. This includes word coverage ratio, and content word   coverage
+Hypothesis (H) words are covered by local relationship from Text (T)
+words. This includes word coverage ratio, and content word  coverage
 ratio. For the content-word coverage ratio, function words are
-filtered based by (language independent, coarse) POS-tags. The two
-feature sets express general assumption that the more H content
-covered, the more likely it is entailment.  
+filtered based on (language independent) POS class. The two features
+express general assumption that the more H content covered, the more
+likely it is entailment.    
 
 Two other features are Verb coverage, and Proper name
-coverage. Verb-coverage ratio estimates the chance that some predicate
-is missed, and new in Hypothesis. Proper name coverage estimates the
-chance that the Hypothesis has a new entity names in H that is not
-covered by the components of Text. 
+coverage features. Verb-coverage ratio estimates the chance that some
+predicate is missed and not covered (or new) on Hypothesis.
+Proper name coverage features estimates the chance that the Hypothesis
+has a new entity names introduced in H that is not covered by the
+components of T. 
 
 The features adopted here can be considered as the base-line for the
-approach. Adding new aligners, naturally, requires adding better /
-more sophisticated features that utilize the meaning of analysis added
-by the new aligners. We expect that this feature design process is not
-trivial and remain to be tested in future work. 
+approach. Adding new aligners, naturally, requires adding more
+sophisticated features that utilize the added analysis of the new
+aligners. We expect that this feature design process is not trivial
+and remain to be tested in future work.  
 
 \subsection{Experimental results} 
-RTE3 was one of the evaluation workshop for TE \cite{}. The evaluation
-data holds 800 training and 800 testing T-H pairs, and later it was
-translated to both German and Italian \cite{}. As far as we know, this
-is the only RTE evaluation data that is available in multiple
-languages. The following table shows the evaluation result of the
-pilot study, marked as {\em proposed}, compared to other open-source
-TE systems that we have tested against. 
+RTE3 was one of the evaluation workshop for TE community \cite{}. The
+evaluation data holds 800 training and 800 testing T-H pairs, and
+later the data was translated to both German and Italian \cite{}. As
+far as we know, this is the only RTE evaluation data that is available
+in multiple languages. The following table shows the evaluation result
+of the pilot study, marked as {\em proposed}, compared to three other 
+open-source TE systems that we have tested with.  
 
 \begin{table}[t!]
 \centering
@@ -305,27 +300,28 @@ RTE3 median   &   0.6100      &             &          \\
 \label{table:rte3}
 \end{table}
 
-Each of the system is configured with their known best configurations
-as reported by the developers. The pilot system supports all three
-languages, while others supports one (BIUTEE, English only) or two
-languages (EDITS, TIE). The pilot system performed well in all
-three languages and scored the best among the tested systems.
+Each of the open source system is configured with their known best
+configurations as reported by the developers. The pilot system
+supports all three languages, while others supports one (BIUTEE,
+English only) or two languages (EDITS, TIE). The pilot system
+performed well in all three languages and scored the best among the
+tested systems. It ties on the accuracy score with BIUTEE on English,
+but it outperforms both EDITS and TIE on all English, German and
+Italian. 
 
 Second task for evaluation is Entailment Graph building. It is an
 application task that helps readers to explore texts in statement
 levels. An entailment graph is a directed graph, where nodes
-represents statements, and edges represent entailment relations
-between them. Building of the graph requires a TE engine, and the TE
-engine can be evaluated in this setup with F-1 measure (how effective
-it was in searching for correct entailment-edges). They are texts from
-customer interaction domain, and they provide large training / test
-set for TE (5300 pairs for English training / testing, 1700 pairs for
-Italian, etc). Each data originated from actual native speakers
-(unlike RTE3 data, German and Italian data are not translations). See
-\cite{} and \cite{} for more information about the task and data.  
-%Previously it is reported that BIUTEE was the best available engine
-%for English, and EDITS was the best for Italian \cite{}. 
-Table \ref{table:egraph} shows our evaluation results.      
+represents statements and edges represent entailment relations
+between them. Building of the graph requires a TE engine, and the
+performance of TE engine is often evaluated with F-1 measure in this
+setup. See \cite{} and \cite{} for more information about the task and
+data.
+The data are real-world texts from customer interaction domain, and
+they provide large training / test set for TE engine (5300 pairs for
+English, 1700 pairs for Italian, etc). Each data originated from
+actual native speakers, and not translated data. Table
+\ref{table:egraph} shows our evaluation results.       
 
 \begin{table}[t!]
 \centering
@@ -339,40 +335,42 @@ EDITS         &      -       &   0.6562    &     -     \\
 TIE           &      -       &     -       &   0.7241  \\ 
 \end{tabular}
 \caption{Evaluation result on entailment graph data (f-1 measure)}
-% balanced, pure-split data set. 
+% balanced, pure-split data.  
 \label{table:egraph}
 \end{table}
 
-For this task, we ran two systems for each data set. One is our
-proposed pilot system, and the other is the best engine reported
-for the data set. The pilot system beats EDITS in Italian data, and
-closely follows TIE in German data, while BIUTEE outperforms the pilot
-system in English.  
+For this task, we ran two systems for each data. One is our proposed
+pilot system, and the other is the best engine reported for the
+data. The pilot system beats EDITS in Italian data, and closely
+follows TIE in German data, while BIUTEE outperforms the pilot system
+in English data.  
 
 The two evaluation results show that the pilot system is already
-competing with the state-of-the-art open-source TE engines. The pilot
-system actually outperforms in RTE3 evaluation data. The fact is even
-more impressive that it is one system that works on all three
-languages with language independent aligners and features. We
-interpret this result as a positive sign for the future of the
-proposed architecture.      
+competing with the state-of-the-art open-source TE engines. The pilot 
+system actually outperforms them all in RTE3 evaluation data. The fact
+is even more impressive considering that the pilot system is one
+system that works on all three languages.
+We interpret this result as a positive sign for the future of the
+proposed architecture, since the simple baseline for the approach
+already competes with complex, single-language TE systems. 
 
 \section{Conclusion (0.5 page)}
-
-The paper introduced an TE engine architecture that relies on a layer
-of ``multi-level alignments''. The approach closely follows successful
+This paper introduced a TE architecture that relies on a layer of
+{\em multi-level alignments}. The approach closely follows successful  
 alignment-based TE architectures, but differs in the sense that the
-proposed method encourages to have multiple alignments co-existing in
-a common data structure, and uses this structure as a ``firewall'' for 
-all analysis. We reported a base-line, pilot system of this approach,
-and evaluated its performance compared to other open source TE
-engines. The pilot system already competes with the state-of-the-art. 
-More over, the system is extensible, robust enough to be used on
-multilingual input. It is available for anyone to use it as an open
-source engine. We believe that the resulting system is far easier to
-access, modify and add new contributions than any other existing open
-source TE systems. 
+proposed method encourages having multiple alignments co-existing in 
+one common data structure. The approach suggests using this structure
+as the ``firewall'' for all analysis, and making TE engine more open
+for future improvements.
 
+We reported a base-line, pilot system of this approach, and evaluated
+its performance compared to other open-source TE engines. The pilot
+system already competes with the state-of-the-art. The system is
+also extensible, small and robust, and works with multilingual input
+out of the box. It is available as open-source, and can be used by
+anyone who needs a multilingual TE engine. We believe that the
+resulting system is easier to access, modify and extend compared to
+other open-source TE engines.
 %% \section*{Acknowledgments}
 
 %% Do not number the acknowledgment section.
