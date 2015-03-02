@@ -33,63 +33,63 @@
 \begin{document}
 \maketitle
 \begin{abstract}
-While Textual Entailment technology has become more 
-
-The paper introduces 
-
-a Textual Entailment architecture that focuses
-on {\em multi-level alignments}. The approach encourages multiple
-alignments co-existing in one common data structure, and the
-architecture uses this as the central representation. The paper shows
-an open-source, pilot implementation of the approach, which competes
-with the state-of-the-art open-source TE engines.  
+  % SP: more motivation
+  Textual Entailment technology has become more robust over the last
+  years. Nevertheless, state-of-the-art models still rely on
+  hand-crafted, incompatible data structures, which makes exchange of
+  components very difficult in practice. In this paper, we introduce
+  {\em multi-level alignments} as a very general representation to
+  store information relevant for deciding entailment that can store
+  many kinds of information, can be translated easily into features,
+  and is applicable across languages. We demonstrate that a very
+  simple open-source, pilot implementation of the approach already
+  competes with much more complex state-of-the-art open-source TE
+  engines across three languages.
 \end{abstract}
 
 \section{Introduction}
-One key challenge at the core of Natural Language Processing (NLP) is
-the ability to determine which conclusions can be inferred from a
-given natural language text. An engine that answers this problem,
-Recognition of Textual Entailment \cite{}, has the potential to
-become the generic semantic processing engine for various NLP tasks.     
+A key challenge of Natural Language Processing is to determine what
+conclusions can be drawn from a natural language text, a task known as
+\textit{Textual Entailment} (TE, Dagan and Glickman
+2004).\nocite{dagan04:_probab_textual_entail} The ability to recognize
+TE helps dealing with surface variability in tasks like Question
+Answering~\cite{harabagiu-hickl:2006:COLACL}, Intelligent Tutoring
+\cite{nielsen09:_recog_entail_in_intel_tutor_system}, or Text
+Exploration \cite{berant2012learning}.
 
-Textual Entailment (TE) technology has matured during the last
-decade. TE modules are being utilized in various semantic
-applications, and researchers can find a range of well developed
-algorithms, methods and even software suites. It is now much easier
-for new users to utilize TE engines for their applications. Recent 
-developments of ``platform approach'' even permit us to exchange
-various modules (such as knowledge-bases, pre-processing pipelines) in
-a standardized way \cite{EOP-arch}. 
+TE technology has matured substantially over the last decade. Numerous
+engines have been developed that implement a wide range of algorithms
+and make use of many types of linguistic knowledge resources. It is
+now much easier for end users to utilize TE engines. Recent progress
+in the development of a common architecture for TE even makes it
+possible to exchange various modules (such as resources,
+pre-processing pipelines) fairly easily \cite{EOP-arch}.
 
-However, one core problem still remains and hinders improvements of  
-existing TE solutions: extensibility of TE core algorithm
-implementation. Unlike pre-processing modules or knowledge resources,   
-extending an existing TE algorithm implementation is generally a very
-difficult task. Core algorithm parts of TE engines are normally
-designed as {\em black-boxes}. Thus, adding support for a new
-language, a new aspect of analysis, or a change of the internal
-representation of an existing engine are often very hard, if not
-impossible. This often forces next generation of TE researchers to
-write their own core algorithms again from the scratch.
+However, one crucial problem remains: The core TE algorithms
+themselves are generally not designed to be extendable or
+interoperable. Therfore, unlike pre-processing modules or knowledge
+resources, changes to the core algorithms (like adding support for a
+new language or a new aspect of analysis) are often very hard, if not
+impossible. This often forces the next generation of TE researchers to
+write their own core algorithms again from scratch.
 
-In this paper, we focus and revisit this aspect of extensibility of TE
-implementation. We propose a solution to this problem by proposing a 
-TE architecture that revolves around a layer called {\em multi-level
-  alignment representation} that holds various heterogeneous analysis
-results. Each analyzer represent their analysis as a form of alignment
-between the Text (T) and Hypothesis (H) annotations. The layer works
-as the central representation for the proposed TE processing flow, and
-makes it easier to future contributors to add their own analysis
-components. 
+In this paper, we address this problem by proposing a TE architecture
+that revolves around a central representation layer called {\em
+  multi-level alignment} which can encode many relevant phenomena for
+entailment. The use of multi-level alignments encourages the modular,
+extensible development of TE algorithms that separate neatly into
+``alignment producers'' and ``alignment consumers''. This makes it
+easier to future researchers and developers to change analysis
+components or add new ones. \marginpar{SP: that's just a claim,
+  right?}
 
-This paper introduces our pilot study of this architecture, and shows
-evaluation results for English, German and Italian. The pilot
-implementation utilizes only a minimal number of analyzers (aligners),
-coupled with a set of basic language-independent features. Thus, the 
-reported result of this system can be regarded as the baseline of the
-proposed approach approach. Surprisingly, the results are quite good
-and it already competes with the best open-source engines available
-for each target language. 
+We also demonstrate our pilot implementation of this architecture and
+shows evaluation results for English, German and Italian. It utilizes
+only a minimal number of analysers, coupled with a set of basic
+language-independent features, and thus can be regarded as a baseline
+of the performance achievable with this approach.  The results are
+surprisingly good and already compete with the best open-source
+engines available for each target language.
 
 \section{Textual entailment with multi-level alignments}
 Alignments between Text and Hypothesis have been used as important
