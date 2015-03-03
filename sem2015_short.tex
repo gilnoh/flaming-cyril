@@ -1,5 +1,5 @@
-% The manuscript for P1EDA, short paper. 
-
+% The manuscript for P1EDA, short paper.
+%
 \documentclass[11pt,letterpaper]{article}
 \usepackage{naaclhlt2015}
 \usepackage{times}
@@ -11,9 +11,10 @@
 \usepackage{rotating}
 \setlength\titlebox{6.5cm}    % Expanding the titlebox
 
-\title{Multi-Level Alignments As an Abstraction Layer for Extendable,
-  Multilingual Textual Entailment}
-
+%\title{Multi-Level Alignments As an Abstraction Layer for Extendable,
+%  Multilingual Textual Entailment}
+\title{Multi-Level Alignments for Extensible Multilingual Textual
+  Entailment}  
 
 % \author{Author 1\\
 % 	    XYZ Company\\
@@ -34,13 +35,14 @@
 \begin{abstract}
   Textual Entailment technology has become more robust over the last
   years. Nevertheless, state-of-the-art models still rely on
-  hand-crafted, incompatible data structures, which makes exchange of
-  components very difficult in practice. In this paper, we introduce
-  {\em multi-level alignments} as a very general representation to
-  store information relevant for deciding entailment that can store
-  many kinds of information. 
-%, can be translated easily into features,
-%  and is applicable across languages. 
+  %hand-crafted,
+  incompatible data structures, which makes exchange of components
+  very difficult in practice. In this paper, we introduce   {\em
+  multi-level alignments} as a very general representation to store
+  information relevant for deciding entailment.
+  % that can store many kinds of information. 
+  %, can be translated easily into features,
+  %  and is applicable across languages. 
   We demonstrate that a very simple open-source, pilot implementation
   of the approach already competes with much more complex
   state-of-the-art open-source TE engines across three languages. 
@@ -60,9 +62,9 @@ TE technology has matured substantially over the last decade. Numerous
 engines have been developed that implement a wide range of algorithms
 and make use of many types of linguistic knowledge resources. It is
 now much easier for end users to utilize TE engines. Recent progress
-in the development of a common architecture for TE even makes it
-possible to exchange various modules (such as resources,
-pre-processing pipelines) fairly easily \cite{EOP-arch}.
+in the development of a common architecture and open source platform
+for TE even makes it possible to exchange various modules (such as
+resources, pre-processing pipelines) fairly easily \cite{EOP-arch}.
 
 %However, developers and researchers are still out of luck: 
 However, improving an existing TE engine is still a very hard task:
@@ -104,7 +106,7 @@ correspondences between parts of T and H that can be used to define
 word level, phrase level \cite{MacCartney:EMNLP08}, or dependency
 level \cite{dinu-wang:2009:EACL}. Dagan et
 al. \shortcite{RTE-book} generalized various TE algorithms into
-universal alignment-based approach with six steps: pre-processing,
+a universal alignment-based approach with six steps: pre-processing,
 enrichment, candidate alignment generation, alignment selection, and
 classification. 
 
@@ -118,14 +120,16 @@ Dagan et al.'s. Figure \ref{fig:1} shows the data flow.
   \label{fig:1}
 \end{figure}
 
-First, Text and Hypothesis are linguistically pre-processed. Then, the
-annotated T-H pair becomes the input for various independent aligners,
-which have access to knowledge resources and can compute any evidence
-for or against entailment that can be represented as a weighted
-alignment between any linguistic levels of H and T. Note that this
-includes many analyses not normally treated as alignment, e.g. match
-or mismatches in negation or modality between parts of T and H, or the
-location of inference rules. The union of all alignments forms the
+First, the text and the hypothesis are linguistically
+pre-processed. Then, the annotated T-H pair becomes the input for
+various independent aligners, which have access to knowledge resources
+and can compute any evidence for or against entailment that can be
+represented as a weighted alignment between any linguistic levels of H
+and T.
+Note that this includes many analyses not normally treated as
+alignment, e.g. match or mismatches in negation or modality between
+parts of T and H. %, or the location of inference rules.
+The union of all alignments forms the 
 central data structure, the {\em Multi-Level Alignments}.
 
 The next step is feature extraction. Features can be extracted on the
@@ -141,12 +145,15 @@ forgo selection is grounded in our design of Multi-Level Alignments as
 a repository that supports coexistence of information from different
 sources. This has the following benefits: (a) aligners become
 decoupled in that adding a new aligner does not have a direct impact
-on the global outcome; (b) alignments produced by different aligners
+on other aligners; 
+%in that adding a new aligner does not have a direct impact
+%on the global outcome;
+(b) alignments produced by different aligners
 can have different semantics, e.g. positive (match) or negative
 (mismatch); (c) interactions between alignments can still be captured
 by defining features in the feature extraction step.
 
-In this manner, Multi-Level Alignments serves as an abstraction layer
+In this manner, Multi-Level Alignments serve as an abstraction layer
 that encourages the development of small, self-contained modules that
 contribute to TE recognition. Each of these modules consists of two
 parts: an aligner, and a set of feature extractors. A priori, each
@@ -173,7 +180,7 @@ online.\footnote{{URL} anonymized.}
 %approach to test its potential by evaluating it on two use cases in
 %three languages (DE, EN, IT). 
 
-\subsection{Technical Foundations.}  
+\subsection{Technical Foundations}  
 \label{sec:techn-found}
 
 We implement the Multi-Level Alignment approach within an open source
@@ -221,8 +228,9 @@ similar to the lexical aligner: any two sequences of tokens in T and H
 are aligned if the pair is listed in the resource.  The alignment
 links created by this aligner instantiate only one relation
 (``paraphrase'') but report the strength of the relation via the
-translation probability. We used the paraphrase table provided by the
-METEOR MT evaluation package \cite{denkowski-lavie:2014:W14-33}, which are available for numerous languages.
+translation probability. We used the paraphrase tables provided by the
+METEOR MT evaluation package \cite{denkowski-lavie:2014:W14-33}, which
+are available for numerous languages. 
 
 \paragraph{Lemma Identity Aligner.} This aligner does not use any
 resources. It simply aligns identical lemmas between T and H and plays
@@ -259,10 +267,10 @@ the Textual Entailment community
 \cite{giampiccolo07:_third_pascal_recog_textual_entail_chall}. The
 English dataset created for RTE-3 consists of 800 training and 800
 testing T-H pairs. Later, the RTE-3 dataset was translated into both
-German and Italian \cite{Magnini:2014}. This makes it the only Textual 
-Entailment data set that in multiple languages with the same
-content. The task is binary TE recognition, with a baseline of 50\%
-(balanced classes).
+German and Italian \cite{Magnini:2014}. %This makes
+It is the only Textual Entailment dataset in multiple languages with
+the same content. The task is binary TE recognition, with baseline of
+50\% (balanced classes).
 
 We trained and tested our Multi-Level Alignment approach ({\em
   MultiAlign}) on the RTE-3 dataset separately for each language. We
@@ -286,7 +294,7 @@ EDITS         &   63.6      &     -       &  62.6  \\ \hline
 RTE3 median   &   61.8      &             &          \\
 
 \end{tabular}
-\caption{Accuracy evaluation on the RTE3 data set}
+\caption{Accuracy evaluation on the RTE3 dataset}
 \label{table:rte3}
 \end{table}
 
@@ -302,23 +310,23 @@ evaluation is on T-H pairs from entailment graph data. Entailment
 graphs are graphs whose nodes are sets of statements, and whose edges
 represent entailment relations. Entailment graphs can drive Text
 Exploration applciations where a user wants to obtain a hierarchical
-structuring of of the statements from a 
-collection \cite{berant2012learning}.   
+structuring of the statements from a collection \cite{berant2012learning}.   
 
 T-H pairs can be extracted from gold data of entailment graphs, and
 they are often released together with entailment graph test data. The
 data is classical RTE data, and normally required to tune TE engines
-for the given task with f-1 measure. We have chosen data from
+for the given task with F1 measure. We have chosen data from
 entailment graphs as our second evaluation, mainly because they
 provide a large number of non-English T-H pairs. We used English and
-Italian T-H pairs from (REF, lili's), and German T-H pairs released
-from \cite{Eichler:2014}.     
+Italian T-H pairs provided by (REF\footnote{Reference omitted for
+anonymity. The dataset is publicly available.}), and German T-H pairs
+released from \cite{Eichler:2014}.       
 
-All three data sets are from anonimized real-world customer
-interactions, which are fairly large (5300 x 2 pairs for English, 1700
-x 2 pairs for Italian, 319 x 2 pairs for German). They are also
-balanced data like RTE3 pairs, but these data were created by native 
-speakers and not translated. 
+All three datasets are from anonimized real-world customer
+interactions, which are fairly large (5300 training and test pairs for
+English, 1700 pairs for Italian, 319 pairs for German). They are also
+balanced data like RTE3 pairs, but these data were created by native
+speakers and not translated.
 
 \begin{table}[t!]
 \centering
@@ -343,31 +351,31 @@ outperforms {\it MultiAlign}.
 
 \vspace{\baselineskip}
 
-In sum, we find that {\it MultiAlign} is already competitive with
-state-of-the-art open-source TE engines on three languages.  
+%In sum,
+We find that
+{\it MultiAlign} is already competitive with state-of-the-art
+open-source TE engines on three languages.   
 % Gil -- commented the following out. Not true. BIUTEE uses full 
 % pre-processing including co-reference resolution, and each uses
 % their own data represenation ...  
 %%Since all four systems use the same preprocessing pipeline and data 
 %%representation, the differences should reflect actual performance.
 Note that {\it MultiAlign} is not only much less complex, but it is
-also one system covering all three languages, without any
+also the one system covering all three languages, without any
 language-specific optimizations. We interpret this as a positive sign
 for the future of the Multi-Level Alignment approach. 
 
 \section{Conclusion}
 
-This paper has proposed an approach to recognizing Textual Entailment
-that is centered around a data structure of {{\em Multi-Level
+The paper proposed an approach to recognizing Textual Entailment
+that is centered on the data structure of {{\em Multi-Level
 Alignments}. The approach closely follows successful alignment-based
-TE architectures, but differs in that it encourages having multiple
-alignments 
+TE architectures, but encourages having multiple alignments  
 %, at different levels and even possibly contradictory,
 co-existing in one common data structure. 
 We have argued that this structure can provide an important
 abstraction layer that supports extensible and modular entailment
 algorithms, consisting mainly of aligners and feature computers. 
-
 A pilot implementation of this approach showed performance comparable
 to other state-of-the-art open-source TE engines. 
 %The system is extensible, small and robust, and supports
