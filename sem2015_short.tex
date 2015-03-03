@@ -88,7 +88,7 @@ components or add new ones.
 
 We also demonstrate our pilot implementation of this approach and
 show evaluation results for English, German and Italian. It utilizes
-only a minimal number of analysers, coupled with a set of basic
+only a minimal number of analyzers, coupled with a set of basic
 language-independent features, and thus can be regarded as a baseline
 of the performance achievable with this approach.  The results are
 surprisingly good and already compete with the best open-source
@@ -133,7 +133,7 @@ The union of all alignments forms the
 central data structure, the {\em Multi-Level Alignments}.
 
 The next step is feature extraction. Features can be extracted on the
-basis of individal alignments, or from sets of alignments. We assume
+basis of individual alignments, or from sets of alignments. We assume
 that the features form a vector describing the T-H pair, and that the
 last step is supervised entailment classification.
 
@@ -164,10 +164,10 @@ extractors.
 The practical benefit for the developer is that even relatively
 complex TE systems use a small set of well-defined interfaces, which
 makes the whole algorithm easy to manage, even on the implementation
-level. The startup cost is getting acquained with the common data
+level. The startup cost is getting acquainted with the common data
 structure of Multi-Level Alignments. We believe that developers are
 willing to pay this cost, especially when this provides them with a
-platform that supports multilingual preprocessing.
+platform that supports multilingual pre-processing.
 
 \section{Implementation and Evaluation}
 \label{sec:impl}
@@ -309,7 +309,7 @@ been gone through several years of development, while
 evaluation is on T-H pairs from entailment graph data. Entailment
 graphs are graphs whose nodes are sets of statements, and whose edges
 represent entailment relations. Entailment graphs can drive Text
-Exploration applciations where a user wants to obtain a hierarchical
+Exploration applications where a user wants to obtain a hierarchical
 structuring of the statements from a collection \cite{berant2012learning}.   
 
 T-H pairs can be extracted from gold data of entailment graphs, and
