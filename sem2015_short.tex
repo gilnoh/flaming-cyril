@@ -305,28 +305,47 @@ and Italian. This is particularly notable since all three systems have
 been gone through several years of development, while
 {\em MultiAlign} is only a pilot implementation.
 
-\paragraph{Evaluation 2: T-H pairs from Entailment Graphs} The second 
+\paragraph{Evaluation 2: T-H pairs from Entailment Graphs} The second
 evaluation is on T-H pairs from entailment graph data. Entailment
 graphs are graphs whose nodes are sets of statements, and whose edges
 represent entailment relations. Entailment graphs can drive Text
 Exploration applications where a user wants to obtain a hierarchical
-structuring of the statements from a collection \cite{berant2012learning}.   
+structuring of the statements from a collection
+\cite{berant2012learning}.
 
-T-H pairs can be extracted from gold data of entailment graphs, and
-they are often released together with entailment graph test data. The
-data is classical RTE data, and normally required to tune TE engines
-for the given task with F1 measure. We have chosen data from
-entailment graphs as our second evaluation, mainly because they
-provide a large number of non-English T-H pairs. We used English and
-Italian T-H pairs provided by (REF\footnote{Reference omitted for
-anonymity. The dataset is publicly available.}), and German T-H pairs
-released from \cite{Eichler:2014}.       
+Due to space constraints, we cannot evaluate the end-to-end task of
+entailment graph construction. Instead, we focus on the first step,
+the binary decision of entailment for individual T-H pairs, similar to
+RTE-3.
 
-All three datasets are from anonymized real-world customer
-interactions, which are fairly large (5300 training and test pairs for
-English, 1700 pairs for Italian, 319 pairs for German). They are also
-balanced data like RTE3 pairs, but these data were created by native
-speakers and not translated.
+A main difference to RTE-3 is however that these T-H pairs come from
+real-world application data in the three languages and were produced
+by native speakers. They were sampled from entailment graphs that were
+manually constructed on the basis of anonymized real-world customer
+interactions datasets (REF\footnote{Omitted for
+  anonymity. The dataset is publicly available.} for English and
+Italian; Eichler et al. \shortcite{Eichler:2014} for German).  The
+sets were sampled to be balanced.\footnote{We report F$_1$ for
+  comparability with non-balanced setups.} They are fairly
+large (5300 pairs for English, 1700 pairs for Italian, 319 pairs for
+German).
+
+
+% T-H pairs can be extracted from gold data of entailment graphs, and
+% they are often released together with entailment graph test data. The
+% data is classical RTE data, and normally required to tune TE engines
+% for the given task with F1 measure. We have chosen data from
+% entailment graphs as our second evaluation, mainly because they
+% provide a large number of non-English T-H pairs. We used English and
+% Italian T-H pairs provided by (REF\footnote{Reference omitted for
+% anonymity. The dataset is publicly available.}), and German T-H pairs
+% released from \cite{Eichler:2014}.       
+
+% All three datasets are from anonymized real-world customer
+% interactions, which are fairly large (5300 training and test pairs for
+% English, 1700 pairs for Italian, 319 pairs for German). They are also
+% balanced data like RTE3 pairs, but these data were created by native
+% speakers and not translated.
 
 \begin{table}[t!]
 \centering
@@ -346,13 +365,12 @@ TIE           &      -       &     -       &   \textbf{72.4}  \\
 
 Table \ref{table:egraph} shows our evaluation results. We ran two
 systems in each language. {\it MultiAlign} system beats EDITS for
-Italian, and ties with TIE for German. On English, BIUTEE still
-outperforms {\it MultiAlign}.
+Italian (+4\%), and ties with TIE for German. On English, BIUTEE still
+outperforms {\it MultiAlign} (-2\%). Thus, MultiAlign also performs
+acceptably on real-world data.
 
-\vspace{\baselineskip}
-
-%In sum,
-We find that
+ In sum,
+%We find that
 {\it MultiAlign} is already competitive with state-of-the-art
 open-source TE engines on three languages.   
 % Gil -- commented the following out. Not true. BIUTEE uses full 
