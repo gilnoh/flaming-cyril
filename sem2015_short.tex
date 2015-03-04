@@ -239,11 +239,10 @@ an important role in practice to deal with named entities.
 \subsection{A Minimal Feature Set} 
 
 Similar to the aligners, we concentrated on a small set of four
-features in the pilot study. Again, the features are (even at the
-implementation level) completely language independent. Clearly, this
-is only possible because the linguistic annotations, and consequently
-the alignments, use a language-independent type system
-(cf. Section~\ref{sec:techn-found}).
+features in the pilot study. Again, the features are completely
+language independent, even at the implementation level. This is
+possible because the linguistic annotations and the alignments, use a
+language-independent type system (cf. Section~\ref{sec:techn-found}).
 
 All current features measure some form of \textit{coverage} on the
 Hypothesis, i.e. the percentage of H that can be explained by T. The
@@ -270,7 +269,7 @@ testing T-H pairs. Later, the RTE-3 dataset was translated into both
 German and Italian \cite{Magnini:2014}. %This makes
 It is the only Textual Entailment dataset in multiple languages with
 the same content. The task is binary TE recognition, with baseline of
-50\% (balanced classes).
+50\% accuracy (balanced classes).
 
 We trained and tested our Multi-Level Alignment approach ({\em
   MultiAlign}) on the RTE-3 dataset separately for each language. We
@@ -283,7 +282,7 @@ two languages (EDITS, TIE).
 
 \begin{table}[t!]
 \centering
-\small
+%\small
 \begin{tabular}{l|ccc}
           &   English   &   German   &   Italian \\
 \hline
@@ -316,18 +315,17 @@ structuring of the statements from a collection
 Due to space constraints, we cannot evaluate the end-to-end task of
 entailment graph construction. Instead, we focus on the first step,
 the binary decision of entailment for individual T-H pairs, similar to
-RTE-3.
-The main difference to RTE-3 is however that these T-H pairs come from  
-real-world application data in the three languages and were produced
-by native speakers. They were sampled from entailment graphs that were
-manually constructed on the basis of anonymized real-world customer
-interactions datasets (REF\footnote{Omitted for
+RTE-3.  The main difference to RTE-3 is however that these T-H pairs
+come from real-world application data in the three languages and were
+produced by native speakers. They were sampled from entailment graphs
+that were manually constructed on the basis of anonymized real-world
+customer interactions datasets (REF\footnote{Omitted for
   anonymity. The dataset is publicly available.} for English and
 Italian; Eichler et al. \shortcite{Eichler:2014} for German).  The
-sets were sampled to be balanced.\footnote{We report F$_1$ for
-  comparability with non-balanced setups.} They are fairly
-large (5300 pairs for English, 1700 pairs for Italian, 319 pairs for
-German). 
+sets were sampled to be balanced. We report F$_1$ for comparability
+with non-balanced setups; the random baseline in our setup is
+F$_1$=50. They are fairly large (5300 pairs for English, 1700 pairs
+for Italian, 319 pairs for German).
 
 % T-H pairs can be extracted from gold data of entailment graphs, and
 % they are often released together with entailment graph test data. The
@@ -347,7 +345,7 @@ German).
 
 \begin{table}[t!]
 \centering
-\small
+%\small
 \begin{tabular}{l|ccc}
               &   English         &   German        &  Italian  \\
 \hline
@@ -368,13 +366,12 @@ with TIE for German. On English, BIUTEE still outperforms {\it
   MultiAlign} (-2 points). Thus, MultiAlign also performs acceptably
 on real-world data. 
 
-In sum, We find that
-{\it MultiAlign} is already competitive with state-of-the-art
-open-source TE engines on three languages.   
-Note that {\it MultiAlign} is not only much less complex, but it is
-also the one system covering all three languages, without any
-language-specific optimizations. We interpret this as a positive sign
-for the future of the Multi-Level Alignment approach. 
+In sum, we find that {\it MultiAlign} is already competitive with
+state-of-the-art open-source TE engines on three languages.  
+{\it MultiAlign} is not only much less complex, but it is also the one
+system covering all three languages, without any language-specific
+optimizations. We interpret this as a positive sign for the future of
+the Multi-Level Alignment approach.
 
 \section{Conclusion}
 
