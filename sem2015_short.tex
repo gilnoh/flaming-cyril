@@ -68,7 +68,7 @@ resources, pre-processing pipelines) fairly easily \cite{EOP-arch}.
 
 %However, developers and researchers are still out of luck: 
 However, improving an existing TE engine is still a very hard task:
-The core TE algorithms themselves are generally not designed to be
+the core TE algorithms themselves are generally not designed to be
 extensible or interoperable. Therefore, unlike pre-processing modules 
 or knowledge resources, changes to the core algorithms (like adding
 support for a new language or a new aspect of analysis) are often very
@@ -81,14 +81,14 @@ that revolves around a central representation layer called {\em
 entailment. The use of multi-level alignments encourages the modular,
 extensible development of TE algorithms that separate neatly into
 ``alignment producers'' and ``alignment consumers''. This makes it
-easier to future researchers and developers to change analysis
+easier for future researchers and developers to change analysis
 components or add new ones. 
 %\marginpar{SP: that's just a claim, right?}
 %Gil: I agree. ``producer'' ``consumer'' sounds also clear. 
 
 We also demonstrate our pilot implementation of this approach and
 show evaluation results for English, German and Italian. It utilizes
-only a minimal number of analyzers, coupled with a set of basic
+a minimal number of analyzers, coupled with a set of basic
 language-independent features, and thus can be regarded as a baseline
 of the performance achievable with this approach.  The results are
 surprisingly good and already compete with the best open-source
@@ -302,8 +302,8 @@ The results are shown in Table~\ref{table:rte3}. The pilot system
 performs well in all three languages. It ties with BIUTEE on English
 and it outperforms TIE and EDITS in their respective results on German
 and Italian. This is particularly notable since all three systems have
-been gone through several years of development, while
-{\em MultiAlign} is only a pilot implementation.
+gone through several years of development, while {\em MultiAlign} is
+only a pilot implementation. 
 
 \paragraph{Evaluation 2: T-H pairs from Entailment Graphs} The second
 evaluation is on T-H pairs from entailment graph data. Entailment
@@ -317,8 +317,7 @@ Due to space constraints, we cannot evaluate the end-to-end task of
 entailment graph construction. Instead, we focus on the first step,
 the binary decision of entailment for individual T-H pairs, similar to
 RTE-3.
-
-A main difference to RTE-3 is however that these T-H pairs come from
+The main difference to RTE-3 is however that these T-H pairs come from  
 real-world application data in the three languages and were produced
 by native speakers. They were sampled from entailment graphs that were
 manually constructed on the basis of anonymized real-world customer
@@ -328,8 +327,7 @@ Italian; Eichler et al. \shortcite{Eichler:2014} for German).  The
 sets were sampled to be balanced.\footnote{We report F$_1$ for
   comparability with non-balanced setups.} They are fairly
 large (5300 pairs for English, 1700 pairs for Italian, 319 pairs for
-German).
-
+German). 
 
 % T-H pairs can be extracted from gold data of entailment graphs, and
 % they are often released together with entailment graph test data. The
@@ -351,33 +349,28 @@ German).
 \centering
 \small
 \begin{tabular}{l|ccc}
-              &   English    &   Italian   &  German  \\
+              &   English         &   German        &  Italian  \\
 \hline
-{\em MultiAlign}&   69.2     &   \textbf{69.5}    &   \textbf{72.4}  \\
-BIUTEE        &   \textbf{71.3}     &     -       &     -     \\
-EDITS         &      -       &   65.6    &     -     \\
-TIE           &      -       &     -       &   \textbf{72.4}  \\ 
+{\em MultiAlign}&   69.2          &  \textbf{72.4}  &  \textbf{69.5}   \\
+BIUTEE          &   \textbf{71.3} &     -           &     -            \\
+TIE             &     67.3        &  \textbf{72.4}  &     -            \\ 
+EDITS           &     66.6        &     -           &    65.6          \\
+
 \end{tabular}
 \caption{F$_1$ evaluation on entailment graph data}
 % balanced, pure-split data.  
 \label{table:egraph}
 \end{table}
 
-Table \ref{table:egraph} shows our evaluation results. We ran two
-systems in each language. {\it MultiAlign} system beats EDITS for
-Italian (+4\%), and ties with TIE for German. On English, BIUTEE still
-outperforms {\it MultiAlign} (-2\%). Thus, MultiAlign also performs
-acceptably on real-world data.
+Table \ref{table:egraph} shows our evaluation results.
+{\it MultiAlign} system beats EDITS for Italian (+4 points), and ties
+with TIE for German. On English, BIUTEE still outperforms {\it
+  MultiAlign} (-2 points). Thus, MultiAlign also performs acceptably
+on real-world data. 
 
- In sum,
-%We find that
+In sum, We find that
 {\it MultiAlign} is already competitive with state-of-the-art
 open-source TE engines on three languages.   
-% Gil -- commented the following out. Not true. BIUTEE uses full 
-% pre-processing including co-reference resolution, and each uses
-% their own data represenation ...  
-%%Since all four systems use the same preprocessing pipeline and data 
-%%representation, the differences should reflect actual performance.
 Note that {\it MultiAlign} is not only much less complex, but it is
 also the one system covering all three languages, without any
 language-specific optimizations. We interpret this as a positive sign
