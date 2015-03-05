@@ -173,8 +173,8 @@ platform that supports multilingual pre-processing.
 \label{sec:impl}
 
 We describe a pilot implementation of the approach and two evaluation
-results in three languages (EN, DE, IT). The system is available
-online.\footnote{{URL} anonymized.} 
+results in three languages (EN, DE, IT). The system is available as
+open-source.\footnote{{URL} anonymized.}  
 
 %Multi-Level Alignment
 %approach to test its potential by evaluating it on two use cases in
@@ -329,10 +329,10 @@ are sampled from application gold data which were manually constructed
 on the basis of anonymized real-world customer interactions datasets
 (Eichler et al. \shortcite{Eichler:2014} for German;
 REF\footnote{Omitted for anonymity. The dataset is publicly
-available.} for English and Italian). 
-The sets were sampled to be balanced (random baseline is F$_1$=50),
-and fairly large (5300 pairs for English, 1700 for Italian, 1274 for
-German).  
+available.} for English and Italian). The sets are fairly large (5300
+pairs for English, 1700 for Italian, 1274 for German), and were
+sampled to be balanced (random baseline is F$_1$=50). We report F$_1$
+for comparability with non-balanced setups. 
 
 %The second evaluation is on T-H pairs from entailment graph
 %data.
@@ -402,7 +402,7 @@ encourages having multiple alignments
 co-existing in a common data structure. 
 We argued that this structure can provide an important
 abstraction layer that supports extensible and modular entailment
-algorithms, consisting mainly of aligners and feature computers. 
+algorithms. %,consisting mainly of aligners and feature computers. 
 A pilot implementation %of this approach
 showed performance comparable to other state-of-the-art open-source TE
 engines.  
