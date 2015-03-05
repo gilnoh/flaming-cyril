@@ -52,16 +52,16 @@
 %  In this paper, we introduce {\em multi-level alignments} as a
 %  general representation to store information relevant for recognizing
 %  entailment that 
-
+%
   In this paper, we introduce {\em multi-level alignments} as a
   central, powerful representation for TE algorithms that encourages
-  modular, reusable algorithm development.
+  modular, reusable, multilingual algorithm development.
   % that can store many kinds of information. 
   %, can be translated easily into features,
   %  and is applicable across languages. 
-  We demonstrate that a pilot implementation of multi-level alignment
-  with minimal features (open source) competes with
-  state-of-the-art open-source TE engines across three languages.
+  We demonstrate that a pilot open source implementation of
+  multi-level alignment with minimal features can compete with
+  state-of-the-art open-source TE engines in three languages.
 \end{abstract}
 
 \section{Introduction}
@@ -72,43 +72,49 @@ conclusions can be drawn from a natural language text, a task known as
 TE helps dealing with surface variability in tasks like Question
 Answering~\cite{harabagiu-hickl:2006:COLACL}, Intelligent Tutoring
 \cite{nielsen09:_recog_entail_in_intel_tutor_system}, or Text
-Exploration \cite{berant2012learning}.
+Exploration \cite{berant2012learning}. Open source implementations a
+number of TE algorithms have become available over the last years,
+including BIUTEE \cite{Stern:2012} and EDITS \cite{Kouylekov:2010},
+which has made it much easier for end users to utilize TE engines.
 
-TE technology has matured substantially over the last decade. Numerous
-engines have been developed that implement a wide range of algorithms
-and make use of many types of linguistic knowledge resources. It is
-now much easier for end users to utilize TE engines. Recent progress
-in the development of a common architecture and open source platform
-for TE even makes it possible to exchange various modules (such as
-resources, pre-processing pipelines) fairly easily \cite{EOP-arch}.
+At the same time, the situation is still more difficult for
+researchers and developers. Even though recently a common platform for
+TE has been proposed \cite{EOP-arch} that standardizes important
+aspects like annotation types, preprocessing, and knowledge resources,
+it largely ignores the algorithmic level. In fact, TE algorithms
+themselves are generally not designed to be extensible or
+interoperable. Therefore, changes to the algorithms -- like adding
+support for a new language or for new analysis aspect -- are often
+very involved, if not impossible. This often forces the next
+generation of TE researchers to develop and implement their own core
+algorithms from scratch.
+
+%TE technology has matured substantially over the last decade. Numerous
+%engines have been developed that implement a wide range of algorithms
+%and make use of many types of linguistic knowledge resources.
 
 %However, developers and researchers are still out of luck: 
-However, improving an existing TE engine is still a very hard task:
-the core TE algorithms themselves are generally not designed to be
-extensible or interoperable. Therefore, unlike pre-processing modules 
-or knowledge resources, changes to the core algorithms (like adding
-support for a new language or a new aspect of analysis) are often very
-hard, if not impossible. This often forces the next generation of TE
-researchers to write their own core algorithms again from scratch. 
+%However, 
 
-In this paper, we address this problem by proposing an approach to TE
-that revolves around a central representation layer called {\em
-  multi-level alignment} which can encode many relevant phenomena for
-entailment. The use of multi-level alignments encourages the modular,
-extensible development of TE algorithms that separate neatly into
-``alignment producers'' and ``alignment consumers''. This makes it
-easier for future researchers and developers to change analysis
-components or add new ones. 
+In this paper, we address this problem by proposing a schema for TE
+algorithms that revolves around a central representation layer called
+{\em multi-level alignment} geared towards encoding the relevant
+information for deciding about entailment. The use of multi-level
+alignments encourages a modular, extensible development of TE
+algorithms that can be partitioned into ``alignment producers'' and
+``alignment consumers''. This enables for future researchers
+and developers to change analysis components or add new ones in a
+straightforward manner.
 %\marginpar{SP: that's just a claim, right?}
 %Gil: I agree. ``producer'' ``consumer'' sounds also clear. 
 
-We also demonstrate our pilot implementation of this approach and show
-evaluation results for English, German and Italian. It utilizes a
-minimal number of analyzers, coupled with a set of basic
-language-independent features, and thus can be regarded as a baseline
+We also presents evaluation results for a very simple TE algorithm
+based on multi-level alignments for English, German and Italian. It
+utilizes a minimal set of analyzers and four basic
+language-independent features. It can thus be regarded as a baseline
 of the performance achievable with this approach.  The results can
 already compete with the best open-source engines available for each
-target language.
+of the languages.
 
 \section{TE with Multi-Level Alignments}
 
