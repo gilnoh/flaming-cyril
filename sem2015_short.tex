@@ -120,18 +120,19 @@ of the languages.
 \section{TE with Multi-Level Alignments}
 
 The quality of the word alignment between a Text (T) and a Hypothesis
-(H) has been used very early as a feature to decide TE. When research
-showed that alignment strength on its own can be misleading
-\cite{maccartney-EtAl:2006:HLT-NAACL06-Main}, alignment was 
+(H) has been used very early as a simple feature to decide about
+TE. When it was found that alignment strength  can be
+misleading \cite{maccartney-EtAl:2006:HLT-NAACL06-Main}, alignment was
 understood as an intermediate step whose outcome is a set of
 correspondences between parts of T and H that can be used to define
-(mis-)match features. Alignments can be established at the
-word level, phrase level \cite{MacCartney:EMNLP08}, or dependency
-level \cite{dinu-wang:2009:EACL}. Dagan et
-al. \shortcite{RTE-book} generalized various TE algorithms into
-a universal alignment-based approach with six steps: pre-processing,
-enrichment, candidate alignment generation, alignment selection, and
-classification. 
+(mis-)match features. Alignments can be established at the word level,
+phrase level \cite{MacCartney:EMNLP08}, or dependency level
+\cite{dinu-wang:2009:EACL}. Dagan et al. \shortcite{RTE-book}
+generalized this practical use to an architectural principle: They
+showed that various TE algorithms can be mapped onto a universal
+alignment-based schema with six steps: pre-processing, enrichment,
+candidate alignment generation, alignment selection, and
+classification.
 
 \paragraph{Proposal.} Our proposal is similar to, but simpler than,
 Dagan et al.'s. Figure \ref{fig:1} shows the data flow.
@@ -139,7 +140,7 @@ Dagan et al.'s. Figure \ref{fig:1} shows the data flow.
 \begin{figure}[t!b]
   \centering
   \includegraphics[width=0.9\columnwidth]{figures/figure1.pdf}
-  \caption{Dataflow of the proposed approach}
+  \caption{Dataflow for TE algorithms based on multi level alignment}
   \label{fig:1}
 \end{figure}
 
@@ -160,15 +161,15 @@ basis of individual alignments, or from sets of alignments. We assume
 that the features form a vector describing the T-H pair, and that the
 last step is supervised entailment classification.
 
-\paragraph{Discussion.} The main difference to Dagan et al.'s
-generalization is that we intentionally leave out the step of {\em
-  alignment   selection} which explicitly selects a single alignment
-for each part of H or T, typically the globally most probable one. 
-Our decision to forgo selection is grounded in our design of
-multi-level alignments as a repository that supports coexistence of
-information from different sources. This has the following benefits:
-(a) aligners become decoupled in that adding a new aligner does not
-have a direct impact on other aligners; 
+\paragraph{Discussion.} The main difference to Dagan et al.'s schema
+is that we intentionally leave out the step of {\em alignment
+  selection} which explicitly selects a single alignment for each part
+of H or T, typically the globally most probable one.  Our decision to
+forgo selection is grounded in our design of multi-level alignments as
+a repository that supports coexistence of information from different
+sources. This has the following benefits: (a) aligners become
+decoupled in that adding a new aligner does not have a direct impact
+on other aligners;
 %in that adding a new aligner does not have a direct impact
 %on the global outcome;
 (b) alignments produced by different aligners
@@ -177,27 +178,28 @@ can have different semantics, e.g. positive (match) or negative
 by defining features in the feature extraction step.
 
 In this manner, multi-level alignments serve as an abstraction layer
-that encourages the development of small, self-contained modules that
-contribute to TE recognition. Each of these modules consists of two
-parts: an aligner, and a set of feature extractors. A priori, each
-module can be defined independently; to introduce interactions with
-other modules, it should be sufficient to extend the feature
-extractors.
+that encourages the development of TE algorithms composed of small,
+self-contained modules that solve specialized tasks in TE
+recognition. Each of these modules consists of two parts: an aligner,
+and a set of feature extractors. A priori, each module can be defined
+independently; to introduce interactions with other modules, it should
+be sufficient to extend the feature extractors.
 
 The practical benefit for the developer is that even relatively
-complex TE systems use a small set of well-defined interfaces, which
-makes the whole algorithm easy to manage, even on the implementation
-level. The startup cost is getting acquainted with the common data
-structure of multi-level alignments. We believe that developers are
-willing to pay this cost, especially when this provides them with a
-platform that supports multilingual pre-processing.
+complex TE algorithms use a small set of well-defined interfaces,
+which makes them easy to manage, even at the implementation level. The
+startup cost is getting acquainted with the common data structure of
+multi-level alignments. We believe that developers are willing to pay
+this cost, especially when this provides them with a platform that
+supports multilingual pre-processing.
 
 \section{Implementation and Evaluation}
 \label{sec:impl}
 
-We describe a pilot implementation of the approach and two evaluation
-results in three languages (EN, DE, IT). The system is available as
-open-source.\footnote{{URL} anonymized.}  
+We describe an implementation of a pilot TE algorithm based on the
+Multi-Level Alignment approach and its evaluation in three languages
+(EN, DE, IT). The system is available as open-source.\footnote{{URL}
+  anonymized.}
 
 %Multi-Level Alignment
 %approach to test its potential by evaluating it on two use cases in
@@ -206,29 +208,29 @@ open-source.\footnote{{URL} anonymized.}
 \subsection{Technical Foundations}  
 \label{sec:techn-found}
 
-We implement the Multi-Level Alignment approach within an open source
-TE development platform \cite{EOP-arch}. The platform provides various
-multilingual pre-processing pipelines and knowledge resources such as
-WordNet, VerbOcean, etc., under a shared API. For pre-processing, we
-use TreeTagger-based pipelines for all three languages.
+We implement the algorithm within an open source TE development
+platform \cite{EOP-arch}. The platform provides various multilingual
+pre-processing pipelines and knowledge resources such as WordNet,
+VerbOcean, etc., under a shared API. For pre-processing, we use
+TreeTagger-based pipelines for all three languages.
 
-Another important service that is provided by the platform is the
+Another important service provided by the platform is the
 ability of storing a wide range of linguistic annotations in a common,
 language-independent data representation. The platform uses UIMA CAS
 \cite{d04:_uima} as the data container, adopts the DKPro type system
 \cite{DKpro}, and defines annotation types which can be extended in a
-controlled manner. We used this capability to introduce a multilingual
-Multi-Level Alignment layer %(links with types, labels and weights)
-with relatively little implementation effort.
+controlled manner. We used this capability to define a multilingual
+Multi-Level Alignment layer  %(links with types, labels and weights)
+with little implementation effort.
 %By
 %utilizing those existing modules of a common platform, we were able to
 %concentrate on the core-algorithm implementations.
 
 \subsection{A Minimal Set of Aligners}
 
-The pilot study restricts itself to three aligners.  
-All three aligners are fully language-independent, even though two of
-them use language-dependent knowledge resources. 
+The pilot algorithm restricts itself to three aligners.  All three are
+fully language-independent, even if two use
+language-specific knowledge resources.
 
 \paragraph{Lexical Aligner.} The lexical aligner adds an alignment link
 for a pair of lemmas in T and H if it finds some kind of semantic
@@ -261,8 +263,8 @@ an important role in practice to deal with named entities.
 
 \subsection{A Minimal Feature Set} 
 
-Similar to the aligners, we concentrated on a small set of four
-features in the pilot study. Again, the features are completely
+Similar to the aligners, we concentrate on a small set of four
+features in the pilot algorithm. Again, the features are completely
 language independent, even at the implementation level. This is
 possible because the linguistic annotations and the alignments, use a
 language-independent type system (cf. Section~\ref{sec:techn-found}).
@@ -328,33 +330,33 @@ gone through several years of development, while {\em MultiAlign} is
 only a pilot implementation. 
 
 %\paragraph{Evaluation 2: T-H pairs from Entailment Graphs}
-\paragraph{Evaluation 2: T-H pairs from Application data.}
-The second evaluation is on real-world application data. We used two 
-application datasets: entailment graph dataset (for English and
-Italian), and e-mail categorization dataset (for German).   
+\paragraph{Evaluation 2: T-H pairs from Application Data.}
+We perform the second evaluation on real-world application data from
+two application datasets: an entailment graph dataset (for English and
+Italian), and an e-mail categorization dataset (for German).
 %Entailment graphs are graphs whose nodes are sets of statements,
 %and whose edges represent entailment relations.
-Entailment graph building is a task of making graphs that can drive
-Text Exploration by providing a hierarchical structuring of the
-statements from a collection \cite{berant2012learning}. E-mail
-categorization with inference is another task where the goal is
-automatic categorization of a new e-mail (as T) into its proper
-categories (category description as H) \cite{Eichler:2014}.  
+Entailment graph building is the task of constructing graphs that
+hierarchically structure the statements from a collection
+\cite{berant2012learning} for the application of Text Exploration.  In
+TE-based e-mail categorization, the goal is to assign the right
+category to an email with TE, using the email as T and a category
+description as H. \cite{Eichler:2014}.
 
-Due to space constraints, we cannot evaluate the end-to-end task of
-the applications. Instead, we focus on the first step, the binary
-decision of entailment for individual T-H pairs, similar to RTE-3. 
-The main difference to RTE-3 is however that these pairs come from
-real-world interactions and were produced by native speakers. 
-All T-H pairs %of the three languages
+Due to space constraints, we cannot evaluate these applications
+end-to-end. Instead, we focus on the respective first step, the binary
+decision of entailment for individual T-H pairs. This task corresponds
+to RTE-3, and the main difference to Evaluation~1 is that these pairs
+come from real-world interactions and were produced by native
+speakers.  All T-H pairs %of the three languages
 are sampled from application gold data which were manually constructed
 on the basis of anonymized customer interactions (Eichler et
 al. \shortcite{Eichler:2014} for German; REF\footnote{Omitted for
   anonymity. The dataset is publicly available.} for English and
 Italian). The sets are fairly large (5300 pairs for English, 1700 for
-Italian, 1274 for German), and were sampled to be balanced (random
-baseline is F$_1$=50). We report F$_1$ for comparability with
-non-balanced setups.  
+Italian, 1274 for German), and were sampled to be balanced. We report
+F$_1$ for comparability with non-balanced setups (our random baseline
+is F$_1$=50).
 
 %The second evaluation is on T-H pairs from entailment graph
 %data.
@@ -414,26 +416,20 @@ the Multi-Level Alignment approach.
 
 \section{Conclusion}
 
-The paper proposed an approach to recognizing Textual Entailment
-that is centered on the data structure of {{\em multi-level
-    alignments}. 
-The approach
-  %closely follows successful alignment-based
-%TE architectures, but
-encourages having multiple alignments  
-co-existing in a common data structure. 
-We argued that this structure can provide an important
-abstraction layer that supports extensible and modular entailment
-algorithms. %,consisting mainly of aligners and feature computers. 
-A pilot implementation %of this approach
-showed performance comparable to other state-of-the-art open-source TE
-engines.  
+This paper proposed the use of {{\em multi-level alignments}, a rich
+  data structure allowing multiple alignments to co-exist. We argued
+  that multi-level alignments are a suitable basis for developing
+  Textual Entailment algorithms by virtue of providing a beneficial
+  abstraction layer that supports extensible and modular entailment
+  algorithms. A pilot TE algorithm developed in this schema showed
+  performance comparable to much more sophisticated state-of-the-art
+  open-source TE engines and is available as open source software.
 %The system is extensible, small and robust, and supports
 %input in three languages. 
-It is available as open-source, and can be used by anyone who requires
-a multilingual TE engine.
-We believe that this approach can lead to more modular and more easily
-extensible TE engines.   
+%It is available as open-source, and can be used by anyone who requires
+%a multilingual TE engine.
+%We believe that  can lead to more modular and more easily
+%extensible TE engines.   
 
 %% \section*{Acknowledgments}
 
