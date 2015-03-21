@@ -9,7 +9,7 @@
 %\usepackage{microtype}
 \usepackage{graphicx}
 \usepackage{rotating}
-\setlength\titlebox{6.5cm}    % Expanding the titlebox
+\setlength\titlebox{8.3cm}    % Expanding the titlebox
 
 %\title{Multi-Level Alignments As an Abstraction Layer for Extendable,
 %  Multilingual Textual Entailment}
@@ -19,8 +19,11 @@
 %  Textual Entailment Algorithms}
 % GIL, slightly modified title.
 % ``representation basis'', ``representation layer'' emphasis. 
-\title{Multi-Level Alignments As An Extensible Representation Basis \\
-  for Textual Entailment Algorithms}
+%\title{Multi-Level Alignments As An Extensible Representation Basis \\
+%  for Textual Entailment Algorithms}
+
+\title{Simple, Multilingual, State-of-the-art Textual Entailment
+  Recognition with Multi-Level Alignments}
 
 
 
@@ -178,16 +181,16 @@ decoupled in that adding a new aligner does not have a direct impact
 on other aligners;
 %in that adding a new aligner does not have a direct impact
 %on the global outcome;
-(b) alignments produced by different aligners
-can have different semantics, e.g. positive (match) or negative
-(mismatch); (c) interactions between alignments can still be captured
-by defining features in the feature extraction step.
+(b) alignments produced by different aligners can have different
+semantics, e.g. positive (match) or negative (mismatch); (c)
+interactions between alignments can still be captured, namely by
+defining features in the feature extraction step.
 
 In this manner, multi-level alignments serve as an abstraction layer
 that encourages the development of TE algorithms composed of small,
 self-contained modules that solve specialized tasks in TE
 recognition. Each of these modules consists of two parts: an aligner,
-and a set of feature extractors. A priori, each module can be defined
+and a set of feature extractors. Each module can be defined
 independently; to introduce interactions with other modules, it should
 be sufficient to extend the feature extractors.
 
