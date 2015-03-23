@@ -83,12 +83,12 @@ conclusions can be drawn from a natural language text, a task known as
 TE helps dealing with surface variability in tasks like Question
 Answering~\cite{harabagiu-hickl:2006:COLACL}, Intelligent Tutoring
 \cite{nielsen09:_recog_entail_in_intel_tutor_system}, or Text
-Exploration \cite{berant2012learning}. Open source implementations a
-number of TE algorithms have become available over the last years,
+Exploration \cite{berant2012learning}. Open source implementations of
+a number of TE algorithms have become available over the last years,
 including BIUTEE \cite{Stern:2012} and EDITS \cite{Kouylekov:2010},
 which has made it much easier for end users to utilize TE engines.
 
-At the same time, the situation is still more difficult for
+At the same time, the situation is still  difficult for
 researchers and developers. Even though recently a common platform for
 TE has been proposed \cite{EOP-arch} that standardizes important
 aspects like annotation types, preprocessing, and knowledge resources,
@@ -113,17 +113,17 @@ around a central representation layer called {\em multi-level
 deciding entailment. The use of multi-level alignments encourages a
 modular, extensible development of TE algorithms that can be
 partitioned into ``alignment producers'' and ``alignment
-consumers''. This enables for future researchers and developers to
+consumers''. This enables  future researchers and developers to
 change analysis components or add new ones in a straightforward
 manner.
 %\marginpar{SP: that's just a claim, right?}
 %Gil: I agree. ``producer'' ``consumer'' sounds also clear. 
 
-We go on to describe a minimal implementation of a very simple TE
+We describe a minimal implementation of a very simple TE
 algorithm based on multi-level alignments for English, German and
 Italian. It utilizes a minimal set of analyzers and four basic
 language-independent features. It can thus be regarded as a baseline
-of the performance achievable with this approach.  The results can
+of the performance achievable with this approach.  The results 
 already compete with the best open-source engines available for each
 of the languages.
 
@@ -138,7 +138,7 @@ correspondences between parts of T and H that can be used to define
 (mis-)match features. Alignments can be established at the word level,
 phrase level \cite{MacCartney:EMNLP08}, or dependency level
 \cite{dinu-wang:2009:EACL}. Dagan et al. \shortcite{RTE-book}
-generalized this practical use to an architectural principle: They
+generalized this practical use to an architectural principle: they
 showed that various TE algorithms can be mapped onto a universal
 alignment-based schema with six steps: pre-processing, enrichment,
 candidate alignment generation, alignment selection, and
