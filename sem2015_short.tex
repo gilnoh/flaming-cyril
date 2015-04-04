@@ -1,7 +1,7 @@
 % The manuscript for P1EDA, short paper.
 %
 \documentclass[11pt,letterpaper]{article}
-\usepackage{naaclhlt2015}
+\usepackage{authblk}
 \usepackage{times}
 \usepackage{latexsym}
 \usepackage{microtype}
@@ -10,6 +10,7 @@
 \usepackage{graphicx}
 \usepackage{url}
 \usepackage{rotating}
+\usepackage{naaclhlt2015}
 \setlength\titlebox{6.5cm}    % Expanding the titlebox
 
 %\title{Multi-Level Alignments for Extensible Multilingual Textual Entailment}
@@ -24,17 +25,29 @@
 % authors
 % Gil, Sebastian, Vered, Ido, Vivi, Kathrin, Lili, Meni 
 
-% \author{Author 1\\
-% 	    XYZ Company\\
-% 	    111 Anywhere Street\\
-% 	    Mytown, NY 10000, USA\\
-% 	    {\tt author1@xyz.org}
-% 	  \And
-% 	Author 2\\
-%   	ABC University\\
-%   	900 Main Street\\
-%   	Ourcity, PQ, Canada A1A 1T2\\
-%   {\tt author2@abc.ca}}
+\author[1]{Tae-Gil Noh}
+\author[2]{Sebastian Pad{\'o}}
+\author[3]{Vered Shwartz}
+\author[3]{Ido Dagan}
+\author[4]{\authorcr Vivi Nastase} % Vivi explicitly wanted her name as this 
+\author[5]{Kathrin Eichler}
+\author[3]{Lili Kotlerman}
+\author[3]{Meni Adler} 
+\affil[1]{Department of Computational Linguistics, Heidelberg University, Germany}
+\affil[2]{Institute for Natural Language Processing, Stuttgart University, Germany}
+\affil[3]{Department of Computer Science, Bar Ilan University, Israel}
+\affil[4]{Human Language Technology, Fondazione Bruno Kessler, Italy}
+\affil[5]{Language Technology Lab, DFKI GmbH, Germany}
+
+% e-mails (eh....) 
+% Gil          noh@cl.uni-heidelberg.de
+% Sebastian    pado@ims.uni-stuttgart.de
+% Vered        vered1986@gmail.com 
+% Ido          ido.k.dagan@gmail.com    (or dagan@cs.biu.ac.il) 
+% Vivi         nastase@fbk.eu
+% Kathrin      kathrin.eichler@dfki.de
+% Lili         lili.dav@gmail.com
+% Meni         meni.adler@gmail.com
 
 \date{}
 
@@ -205,7 +218,7 @@ supports multilingual pre-processing and resources.
 We describe an implementation of a pilot TE algorithm based on the
 Multi-Level Alignment approach and its evaluation in three languages
 (EN, DE, IT). The system is available as
-open-source.\footnote{As a part of EXCITEMENT open platform: \url{https://github.com/hltfbk/EOP-1.2.1/wiki/AlignmentEDAP1}}
+open-source.\footnote{As a part of Excitement Open Platform for Textual Entailment. \url{https://github.com/hltfbk/EOP-1.2.1/wiki/AlignmentEDAP1}} 
 
 %Multi-Level Alignment
 %approach to test its potential by evaluating it on two use cases in
