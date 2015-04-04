@@ -8,6 +8,7 @@
 \usepackage{amsmath,amssymb}
 %\usepackage{microtype}
 \usepackage{graphicx}
+\usepackage{url}
 \usepackage{rotating}
 \setlength\titlebox{6.5cm}    % Expanding the titlebox
 
@@ -204,8 +205,8 @@ supports multilingual pre-processing and resources.
 
 We describe an implementation of a pilot TE algorithm based on the
 Multi-Level Alignment approach and its evaluation in three languages
-(EN, DE, IT). The system is available as open-source.\footnote{{URL}
-  anonymized.}
+(EN, DE, IT). The system is available as
+open-source.\footnote{As a part of EXCITEMENT open platform: \url{https://github.com/hltfbk/EOP-1.2.1/wiki/AlignmentEDAP1}}
 
 %Multi-Level Alignment
 %approach to test its potential by evaluating it on two use cases in
@@ -419,6 +420,56 @@ state-of-the-art open-source TE engines on three languages.
 system covering all three languages, without any language-specific
 optimizations. We interpret this as a positive sign for the future of
 the Multi-Level Alignment approach.
+
+
+% (added for final copy)
+\paragraph{Visualization.}
+
+The platform also supports visualization of individual Text-Hypothesis
+pairs, showing the alignments that were created by the system as well
+as the features computed on the basis of the alignments. The
+visualization was built on the basis of the BRAT
+library.\footnote{\url{http://brat.nlplab.org/index.html}}
+
+\begin{figure*}[t]
+  \centering
+\includegraphics[width=\textwidth]{ScreenshotGray}  
+  \caption{Screenshot of the Multi-Level Alignment Visualizer}
+  \label{fig:screenshot}
+\end{figure*}
+
+Figure~\ref{fig:screenshot} shows an example for the Text \textit{The
+  judges made an assessment of Peter's credibility} and the Hypothesis
+\textit{The judges assessed if Peter was credible}. The top line shows
+the final prediction, Entailment, and the confidence (75\%). The main
+part shows the Text and the Hypothesis below each other, connected by
+alignment links that are labeled with their source and their
+score. Recall that we use WordNet and VerbOcean as knowledge sources
+for the Lexical Aligner, Meteor for the Paraphrase Aligner, and
+finally the Identical Lemma Aligner. Note that the alignments can link
+individual words (\textit{assessment} and \textit{assess} are aligned
+through a derivational link from WordNet) but also phrases (The two
+occurrences of \textit{The judges} in Text and Hypothesis are linked
+by virtue of being identical lemmas). 
+
+The three features currently used by the English system are are shown
+below. As can be seen, they aggregate very simple statistics about the
+alignments: 5 of 7 tokens in the hypothesis are covered, 4 out of 5
+content words, and the one proper name is also aligned. This situation
+motivates nicely the use of those features: a relatively low alignment
+coverage on all tokens is still compatible with entailment as long as
+the crucial tokens are aligned. 
+
+This visualization enables end users to quickly take in the
+justification behind the system's decision. Developers can inspect
+alignments and features for plausibility and detect possible bugs and
+assess the limitations of aligners and their underlying resources. For
+example, the current example shows a wrong link produced by the
+VerbOcean resource between the noun \textit{judges} in the Text and
+the verb \textit{assessed} in the Hypothesis. The reason is that the
+noun \textit{judges} is mistaken for an inflected form of the verb
+\textit{to judge} which indeed stands in a \textit{Stronger-than}
+relationship to \textit{to assess}.
 
 \section{Conclusion}
 
